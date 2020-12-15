@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://DESKTOP-7OAMV2O;databaseName=sms
+    username: sa
+    password: Home123
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update

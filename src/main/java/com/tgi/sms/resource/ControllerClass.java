@@ -1,26 +1,16 @@
 package com.tgi.sms.resource;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-
-import javax.print.attribute.standard.DateTimeAtCreation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.tgi.sms.bean.AddFeeBean;
-import com.tgi.sms.model.Admin;
-import com.tgi.sms.model.Building;
 import com.tgi.sms.model.Course;
-import com.tgi.sms.model.Department;
 import com.tgi.sms.model.FeeLog;
-import com.tgi.sms.model.Instructor;
-import com.tgi.sms.model.Student;
+
 import com.tgi.sms.model.StudentFeeLog;
 import com.tgi.sms.repository.AdminRepo;
 import com.tgi.sms.repository.BuildingRepo;
@@ -89,30 +79,17 @@ public class ControllerClass {
 	public ModelAndView searchReocord(Timestamp DateTime) {
 		// long tocheck = DateTime.getTime();
 		ModelAndView model = new ModelAndView("showFee.jsp");
-		List<FeeLog> f = feerepo.findAll();
-		for (FeeLog i : f) {
-			// long withcheck = i.getDateTime().getTime();
-			// if(tocheck == withcheck) {
-			if (i.getDateTime() == DateTime) {
-				model.addObject("fee", feerepo.findById(i.getFeeId()));
-				break;
+		List<FeeLog> list = feerepo.findAll();
+		for(int i = 0; i < list.size(); i++) {
+			Timestamp t = list.get(i).getDateTime();
+			if(t.equals(DateTime)) {
+				FeeLog fee = list.get(i);
+				model.addObject("fee", fee);
+				System.out.println(fee);
 			}
 		}
 		return model;
 	}
-
-	// As it's causing duplicate entries, let's ignore it for now
-//	@RequestMapping("/studentadded")
-//	public String studentadded(Student s) {
-//		studrepo.save(s);
-//		return "save.jsp";
-//	}
-//	
-//	@RequestMapping("/teacheradded")
-//	public String teacheradded(Instructor i) {
-//		instrepo.save(i);
-//		return "save.jsp";
-//	}
 
 	@RequestMapping("/check")
 	public String check() {
@@ -122,39 +99,17 @@ public class ControllerClass {
 	@RequestMapping("/checkingInvoice")
 	public ModelAndView checkingInvoice(String InvoiceId) {
 		ModelAndView model = new ModelAndView("showFee.jsp");
-
-		List<StudentFeeLog> f = studentfeerepo.findAll();
-//		@SuppressWarnings("rawtypes")
-//		List<String> list =new ArrayList();
-//		if(f.size()>0) {
-//			for(int i =0; i<f.size(); i++) {
-//				list.add(f.get(i).getInvoiceId());
-//			}
-//		}
-//		if(list.size()>0) {
-//			for(int i = 0; i<list.size(); i++) {
-//				if(list.get(i).equals(InvoiceId)) {
-//					model.addObject("fee", studentfeerepo.findById(f.get(i).getStudentFeeLogId()));
-//					System.out.println(list);
-//				}
-//					
-//			}
-//		}
-
-		if(f.size()>0) {
-			for(int i =0; i<f.size(); i++) {
-				if(f.get(i) != null) {
-					System.out.print("Working here 2");
-					if((f.get(i).getInvoiceId()).equals(InvoiceId)) {
-						StudentFeeLog fee =studentfeerepo.findById(f.get(i).getStudentFeeLogId()).orElse(null);
-						model.addObject("fee", fee);
-						System.out.print(fee);
-						break;
-					}
-				}
+		List<StudentFeeLog> list = studentfeerepo.findAll();
+		for(int i = 0; i < list.size(); i++) {
+			String tocheck = list.get(i).getInvoiceId();
+			if(tocheck.equals(InvoiceId)) {
+				StudentFeeLog fee = list.get(i);
+				model.addObject("fee", fee);
+				System.out.println(tocheck);
 			}
+				
 		}
 		return model;
-		
 	}
+
 }

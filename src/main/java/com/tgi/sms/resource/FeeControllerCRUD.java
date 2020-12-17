@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -17,6 +18,7 @@ import com.tgi.sms.repository.FeeLogRepo;
 import com.tgi.sms.repository.StudentFeeLogRepo;
 import com.tgi.sms.repository.StudentRepo;
 
+@Controller
 public class FeeControllerCRUD {
 
 	@Autowired
@@ -108,5 +110,27 @@ public class FeeControllerCRUD {
 			return "datadeleted.jsp";
 		} else
 			return "datanotfound.jsp";
+	}
+	
+	//Finding fee record against invoice no
+	@RequestMapping("/check")
+	public String check() {
+		return "getinvoice.jsp";
+	}
+
+	@RequestMapping("/checkingInvoice")
+	public ModelAndView checkingInvoice(String InvoiceId) {
+		ModelAndView model = new ModelAndView("showFee.jsp");
+		List<StudentFeeLog> list = studentfeerepo.findAll();
+		for(int i = 0; i < list.size(); i++) {
+			String tocheck = list.get(i).getInvoiceId();
+			if(tocheck.equals(InvoiceId)) {
+				StudentFeeLog fee = list.get(i);
+				model.addObject("fee", fee);
+				System.out.println(tocheck);
+			}
+				
+		}
+		return model;
 	}
 }

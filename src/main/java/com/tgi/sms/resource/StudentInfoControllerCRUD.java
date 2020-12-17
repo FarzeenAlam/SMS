@@ -1,12 +1,14 @@
 package com.tgi.sms.resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tgi.sms.model.Student;
 import com.tgi.sms.repository.StudentRepo;
 
+@Controller
 public class StudentInfoControllerCRUD {
 
 	@Autowired

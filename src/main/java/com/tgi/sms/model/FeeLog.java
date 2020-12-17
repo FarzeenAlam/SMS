@@ -1,17 +1,15 @@
 package com.tgi.sms.model;
 
 import java.sql.Timestamp;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name="fee_log")
@@ -19,7 +17,7 @@ public class FeeLog {
 
 	@Id
 	@GeneratedValue
-	@Column(name="fee_id")
+	@Column(name="fee_log_id")
 	private int FeeId;
 	
 	@Column(name="date_time")
@@ -31,12 +29,21 @@ public class FeeLog {
 	@Column(name="transaction_type")
 	private String TransactionType;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="stud_id")
+
+	@Column(name="invoice_id")
+	private String InvoiceId;
+	
+	@OneToOne
+	@JoinColumn(name="stud_id", referencedColumnName = "stud_id")
 	private Student student;
 	
-	@ManyToMany(mappedBy="feelog")
-	private Set<Course> course;
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
 
 	public FeeLog() {
 		super();
@@ -74,27 +81,18 @@ public class FeeLog {
 		TransactionType = transactionType;
 	}
 
-	public Student getStudent() {
-		return student;
-	}
-
-	public void setStudent(Student student) {
-		this.student = student;
-	}
-
-	public Set<Course> getCourse() {
-		return course;
-	}
-
-	public void setCourse(Set<Course> course) {
-		this.course = course;
+	public String getInvoiceId() {
+		return InvoiceId;
 	}
 
 	@Override
 	public String toString() {
 		return "FeeLog [FeeId=" + FeeId + ", DateTime=" + DateTime + ", Amount=" + Amount + ", TransactionType="
-				+ TransactionType + ", student=" + student + ", course=" + course + "]";
+				+ TransactionType + ", InvoiceId=" + InvoiceId + ", student=" + student + "]";
 	}
-	
+
+	public void setInvoiceId(String invoiceId) {
+		InvoiceId = invoiceId;
+	}
 	
 }

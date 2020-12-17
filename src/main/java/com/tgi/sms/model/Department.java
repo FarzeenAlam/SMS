@@ -1,6 +1,6 @@
 package com.tgi.sms.model;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,13 +26,13 @@ public class Department {
 	private Building building;
 	
 	@OneToMany(mappedBy="department")
-	private Set<Course> course;
+	private List<Course> course;
 	
 	@OneToMany(mappedBy="department")
-	private Set<Instructor> instructor;
+	private List<Instructor> instructor;
 	
 	@OneToMany(mappedBy="department")
-	private Set<Student> student;
+	private List<Student> student;
 
 	public Department() {
 		super();
@@ -53,53 +53,37 @@ public class Department {
 	public void setDepartmentName(String departmentName) {
 		DepartmentName = departmentName;
 	}
-//
-//	public Building getBuilding() {
-//		return building;
-//	}
-//
-//	public void setBuilding(Building building) {
-//		this.building = building;
-//	}
-//
-//	public Course getCourse() {
-//		return course;
-//	}
-//
-//	public void setCourse(Course course) {
-//		this.course = course;
-//	}
-//
-//	public Instructor getInstructor() {
-//		return instructor;
-//	}
-//
-//	public void setInstructor(Instructor instructor) {
-//		this.instructor = instructor;
-//	}
-//
-//	public Student getStudent() {
-//		return student;
-//	}
-//
-//	public void setStudent(Student student) {
-//		this.student = student;
-//	}
 
-	public Set<Student> getStudent() {
+	public Building getBuilding() {
+		return building;
+	}
+
+	public void setBuilding(Building building) {
+		this.building = building;
+	}
+
+	public List<Course> getCourse() {
+		return course;
+	}
+
+	public void setCourse(List<Course> course) {
+		this.course = course;
+	}
+
+	public List<Instructor> getInstructor() {
+		return instructor;
+	}
+
+	public void setInstructor(List<Instructor> instructor) {
+		this.instructor = instructor;
+	}
+
+	public List<Student> getStudent() {
 		return student;
 	}
 
-	public void setStudent(Set<Student> student) {
+	public void setStudent(List<Student> student) {
 		this.student = student;
 	}
-
-//	@Override
-//	public String toString() {
-//		return "Department [DepartmentId=" + DepartmentId + ", DepartmentName=" + DepartmentName + ", building="
-//				+ building + ", course=" + course + ", instructor=" + instructor + ", student=" + student + "]";
-//	}
-//	
-	
 
 }

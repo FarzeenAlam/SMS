@@ -1,7 +1,6 @@
 package com.tgi.sms.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,9 +8,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -23,6 +22,14 @@ public class Student {
 	@Column(name="stud_id")
 	public int StudentId;
 	
+	public FeeLog getFeelog() {
+		return feelog;
+	}
+
+	public void setFeelog(FeeLog feelog) {
+		this.feelog = feelog;
+	}
+
 	@Column(name="stud_name")
 	public String StudentName;
 	
@@ -30,21 +37,21 @@ public class Student {
 	@JoinColumn(name="dept_id")
 	public Department department;
 	
+	@OneToOne(mappedBy = "student")
+	private FeeLog feelog;
+	
 	@Override
 	public String toString() {
 		return "Student [StudentId=" + StudentId + ", StudentName=" + StudentName + ", department=" + department
 				+ ", feelog=" + feelog + ", instructor=" + instructor + ", course=" + course + "]";
 	}
 
-	@OneToMany(mappedBy="student")
-	public Set<FeeLog> feelog;
-	
-	@ManyToMany(mappedBy="student")
-	private Set<Instructor> instructor = new HashSet<Instructor>();
-	
-	@ManyToMany(mappedBy="student")
-	private Set<Course> course = new HashSet<Course>();
+	@OneToMany(mappedBy = "student")
+	private List<Instructor> instructor;
 
+	@OneToMany(mappedBy = "student")
+	private List<Course> course;
+	
 	public Student() {
 		super();
 	}
@@ -69,24 +76,24 @@ public class Student {
 		return department;
 	}
 
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
-
-	public Set<Instructor> getInstructor() {
+	public List<Instructor> getInstructor() {
 		return instructor;
 	}
 
-	public void setInstructor(Set<Instructor> instructor) {
+	public void setInstructor(List<Instructor> instructor) {
 		this.instructor = instructor;
 	}
 
-	public Set<Course> getCourse() {
+	public List<Course> getCourse() {
 		return course;
 	}
 
-	public void setCourse(Set<Course> course) {
+	public void setCourse(List<Course> course) {
 		this.course = course;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 	
 }

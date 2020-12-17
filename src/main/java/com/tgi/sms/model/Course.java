@@ -1,18 +1,16 @@
 package com.tgi.sms.model;
 
-import java.util.HashSet;
-import java.util.Set;
 
-import javax.persistence.CascadeType;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -30,32 +28,35 @@ public class Course {
 	@Column(name="credit_hours")
 	private int CreditHours;
 	
-//	@OneToMany
-//	@JoinColumn(name="dept_id", referencedColumnName = "dept_id")
-//	private Department department;
-	
 	@ManyToOne
 	@JoinColumn(name="dept_id")
 	private Department department;
 	
-	@ManyToMany(mappedBy="course")
-	private Set<Instructor> instructor = new HashSet<>();
+	@OneToMany(mappedBy = "course")
+	private List<Instructor> instructor;
 	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	@JoinTable(
-			name="course_student",
-			joinColumns = {@JoinColumn(name="course_id")},
-			inverseJoinColumns = {@JoinColumn(name="stud_id")}
-			)
-	private Set<Student> student = new HashSet<>();
-	
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	@JoinTable(
-			name="course_feelog",
-			joinColumns = {@JoinColumn(name="course_id")},
-			inverseJoinColumns = {@JoinColumn(name="fee_id")}
-			)
-	private Set<FeeLog> feelog = new HashSet<>();
+	@ManyToOne
+	@JoinColumn(name="stud_id")
+	private Student student;
+
+	@OneToMany(mappedBy = "course")
+	private List<StudentFeeLog> studentfeelog;
+
+	public Student getStudent() {
+		return student;
+	}
+
+	public List<Instructor> getInstructor() {
+		return instructor;
+	}
+
+	public void setInstructor(List<Instructor> instructor) {
+		this.instructor = instructor;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
 
 	public Course() {
 		super();
@@ -93,60 +94,10 @@ public class Course {
 		this.department = department;
 	}
 
-//	public List<Instructor> getInstructor() {
-//		return instructor;
-//	}
-//
-//	public void setInstructor(List<Instructor> instructor) {
-//		this.instructor = instructor;
-//	}
-//
-//	public List<Student> getStudent() {
-//		return student;
-//	}
-//
-//	public void setStudent(List<Student> student) {
-//		this.student = student;
-//	}
-//
-//	public List<FeeLog> getFeelog() {
-//		return feelog;
-//	}
-//
-//	public void setFeelog(List<FeeLog> feelog) {
-//		this.feelog = feelog;
-//	}
-
 	@Override
 	public String toString() {
 		return "Course [CourseId=" + CourseId + ", CourseTitle=" + CourseTitle + ", CreditHours=" + CreditHours
-				+ ", department=" + department + ", instructor=" + instructor + ", student=" + student + ", feelog="
-				+ feelog + "]";
+				+ ", department=" + department + ", instructor=" + instructor + ", student=" + student + "]";
 	}
 
-	public Set<Instructor> getInstructor() {
-		return instructor;
-	}
-
-	public void setInstructor(Set<Instructor> instructor) {
-		this.instructor = instructor;
-	}
-
-	public Set<Student> getStudent() {
-		return student;
-	}
-
-	public void setStudent(Set<Student> student) {
-		this.student = student;
-	}
-
-	public Set<FeeLog> getFeelog() {
-		return feelog;
-	}
-
-	public void setFeelog(Set<FeeLog> feelog) {
-		this.feelog = feelog;
-	}
-	
-	
 }

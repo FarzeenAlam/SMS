@@ -29,7 +29,7 @@ text-align: center;
 	<form action="addedfee" method="post">
 	<fieldset>
 	<legend style="font-size:35px;">Add fee details</legend>
-	<label style="font-size:20px;">Enter the student id:</label><br>
+	<label style="font-size:20px;">Enter student id:</label><br>
 	<input type = "number" name="student" required style="padding: 8px 32px;"><br><br>
 	<label style="font-size:20px;">Enter the amount:</label><br>
 	<input type = "number" name="Amount" required style="padding: 8px 32px;"><br><br>
@@ -43,12 +43,12 @@ text-align: center;
 	
 	</select>
 	<br><br>
-
-	<label style="font-size:20px;">Enter the course id:</label><br>
-	<input type = "number" name="course" required style="padding: 8px 32px;"><br><br>
-	
-	<label style="font-size:20px;">Enter the course id:</label><br>
-	<input type = "number" name="course" style="padding: 8px 32px;"><br><br>
+	<label style="font-size:20px;">Enter course id:</label><br>
+	<input type = "number" name="coursesList" required style="padding: 8px 32px;"><br><br>
+	<label style="font-size:20px;">Enter course id:</label><br>
+	<input type = "number" name="coursesList"  style="padding: 8px 32px;"><br><br>
+	<label style="font-size:20px;">Enter course id:</label><br>
+	<input type = "number" name="coursesList"  style="padding: 8px 32px;"><br><br>
 	
 	<input type = "submit" value="Add" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	<input type = "reset" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">

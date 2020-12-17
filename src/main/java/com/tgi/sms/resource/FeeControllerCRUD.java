@@ -87,7 +87,7 @@ public class FeeControllerCRUD {
 			feerepo.save(newfee);
 			return "updated.jsp";
 		} else
-			return "datanotfound.jsp";
+			return "datanotfound.jsp"; 
 	}
 
 	//Searching fee

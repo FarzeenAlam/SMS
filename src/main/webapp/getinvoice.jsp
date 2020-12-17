@@ -28,7 +28,7 @@ text-align: center;
 	<fieldset>
 	<legend style="font-size:35px;">Check Courses Against Invoice</legend>
 	<label style="font-size:20px;">Enter invoice id:</label><br>
-	<input type = "number" name="InvoiceId" required><br><br>
+	<input type = "text" name="InvoiceId" required><br><br>
 	
 	<input type = "submit" value="Check" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	<input type = "reset" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">

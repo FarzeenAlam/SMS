@@ -12,6 +12,10 @@ import javax.persistence.Table;
 @Table(name="student_fee_log")
 public class StudentFeeLog {
 
+	public StudentFeeLog() {
+		super();
+	}
+
 	@Id
 	@GeneratedValue
 	@Column(name="student_fee_log_id")

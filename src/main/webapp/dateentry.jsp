@@ -28,7 +28,7 @@ text-align: center;
 	<fieldset>
 	<legend style="font-size:35px;">Search a record</legend>
 	<label style="font-size:20px;">Enter date:</label><br>
-	<input type="datetime" name="DateTime"><br>
+	<input type="date" name="DateTime"><br>
 	
 	<input type = "submit" value="Add" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	<input type = "reset" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">

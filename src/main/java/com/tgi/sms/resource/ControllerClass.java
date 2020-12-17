@@ -1,9 +1,18 @@
 package com.tgi.sms.resource;
 
 import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
+import javax.transaction.Transaction;
+
+import org.hibernate.Query;
+import org.hibernate.SQLQuery;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.provider.HibernateUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +29,7 @@ import com.tgi.sms.repository.FeeLogRepo;
 import com.tgi.sms.repository.InstructorRepo;
 import com.tgi.sms.repository.StudentFeeLogRepo;
 import com.tgi.sms.repository.StudentRepo;
+import com.tgi.sms.utils.ApplicationUtils;
 
 @Controller
 public class ControllerClass {
@@ -76,12 +86,29 @@ public class ControllerClass {
 //	}
 
 	@RequestMapping("/searchRecord")
-	public ModelAndView searchReocord(Timestamp DateTime) {
-		// long tocheck = DateTime.getTime();
-		ModelAndView model = new ModelAndView("showFee.jsp");
+	public ModelAndView searchReocord(Date DateTime) {
+		
+		long endTime = ApplicationUtils.getEnd(DateTime);
+		long startTime = ApplicationUtils.clearTime(DateTime);
+		
 		List<FeeLog> list = feerepo.findAll();
+		
+		ModelAndView model = new ModelAndView("showFee.jsp");
+		
+
+//		javax.persistence.Query query = session.createNativeQuery("select * from FeeLog where DateTime between startTime and endTime");
+//		
+//		SessionFactory sessionFactory = HibernateUtils.
+//		Session session = sessionFactory.getCurrentSession();
+//
+//		org.hibernate.Transaction tx = session.beginTransaction();
+
+		
 		for(int i = 0; i < list.size(); i++) {
 			Timestamp t = list.get(i).getDateTime();
+			
+				
+			}
 			if(t.equals(DateTime)) {
 				FeeLog fee = list.get(i);
 				model.addObject("fee", fee);
@@ -91,25 +118,12 @@ public class ControllerClass {
 		return model;
 	}
 
-	@RequestMapping("/check")
-	public String check() {
-		return "getinvoice.jsp";
+	@RequestMapping("/test")
+	public String checkDate() {
+		FeeLog fee = feerepo.findById(19).orElse(null);
+		System.out.print(fee.getDateTime());
+		return "save.jsp";
 	}
 
-	@RequestMapping("/checkingInvoice")
-	public ModelAndView checkingInvoice(String InvoiceId) {
-		ModelAndView model = new ModelAndView("showFee.jsp");
-		List<StudentFeeLog> list = studentfeerepo.findAll();
-		for(int i = 0; i < list.size(); i++) {
-			String tocheck = list.get(i).getInvoiceId();
-			if(tocheck.equals(InvoiceId)) {
-				StudentFeeLog fee = list.get(i);
-				model.addObject("fee", fee);
-				System.out.println(tocheck);
-			}
-				
-		}
-		return model;
-	}
 
 }

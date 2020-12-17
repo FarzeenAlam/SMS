@@ -43,7 +43,7 @@ public class Student {
 	@Override
 	public String toString() {
 		return "Student [StudentId=" + StudentId + ", StudentName=" + StudentName + ", department=" + department
-				+ ", feelog=" + feelog + ", instructor=" + instructor + ", course=" + course + "]";
+				+"]";
 	}
 
 	@OneToMany(mappedBy = "student")

@@ -22,14 +22,6 @@ public class Student {
 	@Column(name="stud_id")
 	public int StudentId;
 	
-	public FeeLog getFeelog() {
-		return feelog;
-	}
-
-	public void setFeelog(FeeLog feelog) {
-		this.feelog = feelog;
-	}
-
 	@Column(name="stud_name")
 	public String StudentName;
 	
@@ -37,23 +29,34 @@ public class Student {
 	@JoinColumn(name="dept_id")
 	public Department department;
 	
+	@ManyToOne
+	@JoinColumn(name="course_id")
+	private Course course;
+	
 	@OneToOne(mappedBy = "student")
 	private FeeLog feelog;
-	
-	@Override
-	public String toString() {
-		return "Student [StudentId=" + StudentId + ", StudentName=" + StudentName + ", department=" + department
-				+"]";
-	}
 
 	@OneToMany(mappedBy = "student")
 	private List<Instructor> instructor;
 
-	@OneToMany(mappedBy = "student")
-	private List<Course> course;
-	
 	public Student() {
 		super();
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+	
+	public FeeLog getFeelog() {
+		return feelog;
+	}
+
+	public void setFeelog(FeeLog feelog) {
+		this.feelog = feelog;
 	}
 
 	public int getStudentId() {
@@ -84,16 +87,13 @@ public class Student {
 		this.instructor = instructor;
 	}
 
-	public List<Course> getCourse() {
-		return course;
-	}
-
-	public void setCourse(List<Course> course) {
-		this.course = course;
-	}
-
 	public void setDepartment(Department department) {
 		this.department = department;
 	}
 	
+	@Override
+	public String toString() {
+		return "Student [StudentId=" + StudentId + ", StudentName=" + StudentName + ", department=" + department
+				+ ", feelog=" + feelog + ", instructor=" + instructor + ", course=" + course + "]";
+	}
 }

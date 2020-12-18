@@ -1,6 +1,8 @@
 package com.tgi.sms.resource;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.tgi.sms.model.Course;
 import com.tgi.sms.model.FeeLog;
-
+import com.tgi.sms.model.Student;
 import com.tgi.sms.model.StudentFeeLog;
 import com.tgi.sms.repository.AdminRepo;
 import com.tgi.sms.repository.BuildingRepo;
@@ -69,61 +71,88 @@ public class ControllerClass {
 		return "dateentry.jsp";
 	}
 
-//	@SuppressWarnings("unlikely-arg-type")
-//	@RequestMapping("/searchRecord")
-//	public ModelAndView searchRecord(Timestamp DateTime) {
-//		ModelAndView model = new ModelAndView("showdata.jsp");
-//		ModelAndView m = new ModelAndView("nodata.jsp");
-//		feerepo.findAll();
-//		FeeLog f = feerepo.findByDateTime(DateTime);
-//		if(feerepo.findByDateTime(DateTime).equals(feerepo.findAll())) {
-//			model.addObject("date", feerepo.findByDateTime(DateTime));
-//			return model;
-//
-//		}
-//		else
-//			return m;
-//	}
-
 	@RequestMapping("/searchRecord")
-	public ModelAndView searchReocord(Date DateTime) {
-		
-		long endTime = ApplicationUtils.getEnd(DateTime);
-		long startTime = ApplicationUtils.clearTime(DateTime);
-		
-		List<FeeLog> list = feerepo.findAll();
-		
-		ModelAndView model = new ModelAndView("showFee.jsp");
-		
+	public ModelAndView searchReocord(String DateTime) throws ParseException {
 
-//		javax.persistence.Query query = session.createNativeQuery("select * from FeeLog where DateTime between startTime and endTime");
-//		
-//		SessionFactory sessionFactory = HibernateUtils.
-//		Session session = sessionFactory.getCurrentSession();
-//
-//		org.hibernate.Transaction tx = session.beginTransaction();
+		Date date = new SimpleDateFormat("yyyy-mm-dd").parse(DateTime);
+		System.out.println(DateTime + "\t" + date);
 
-		
-		for(int i = 0; i < list.size(); i++) {
-			Timestamp t = list.get(i).getDateTime();
-			
-				
+		Date end = ApplicationUtils.getEnd(date);
+		Date start = ApplicationUtils.clearTime(date);
+
+		System.out.println(start);
+		System.out.println(end);
+
+		List<FeeLog> feelist = feerepo.findAll();
+		List<Course> courselist = crepo.findAll();
+		List<StudentFeeLog> studentfeelist = studentfeerepo.findAll();
+
+		ModelAndView model = new ModelAndView("showdatedetails.jsp");
+
+		for (int i = 0; i < feelist.size(); i++) {
+			Timestamp time = feelist.get(i).getDateTime();
+			Date checkdate = time;
+			if (checkdate.equals(date)) {
+//				if(end >= checkdate) {
+				FeeLog feeLog = feelist.get(i);
+				String invoice = feeLog.getInvoiceId();
+				double amount = feeLog.getAmount();
+				String tt = feeLog.getTransactionType();
+				Course course = checkingInvoice(invoice);
+				model.addObject("fee", amount);
+				model.addObject("tt", tt);
+				model.addObject("course", course);
+				System.out.println("Worked");
+//				}
+//				else
+//					System.out.println("Null");
+
+
 			}
-			if(t.equals(DateTime)) {
-				FeeLog fee = list.get(i);
-				model.addObject("fee", fee);
-				System.out.println(fee);
-			}
+			else
+				System.out.println("NULLLLLL");
 		}
 		return model;
 	}
 
-	@RequestMapping("/test")
-	public String checkDate() {
-		FeeLog fee = feerepo.findById(19).orElse(null);
-		System.out.print(fee.getDateTime());
-		return "save.jsp";
+	public Course checkingInvoice(String InvoiceId) {
+		Course course = null;
+		List<StudentFeeLog> list = studentfeerepo.findAll();
+		for (int i = 0; i < list.size(); i++) {
+			String tocheck = list.get(i).getInvoiceId();
+			if (tocheck.equals(InvoiceId)) {
+				course = list.get(i).getCourse();
+			}
+		}
+		return course;
 	}
+//	private ModelAndView searchStudentCourse(int id) {
+//		ModelAndView model = new ModelAndView("showFee.jsp");
+//
+//		List<Course> list = crepo.findAll();
+//		for(int i = 0; i < list.size(); i++) {
+//			Course course = list.get(i);
+//			if(course.getStudent().getStudentId()==id) {
+//				model.addObject("fee", course);
+//
+//			}
+//		}
+//		return model;
+//	}
 
+//	@RequestMapping("/test")
+//	public String checkDate() {
+//		FeeLog fee = feerepo.findById(19).orElse(null);
+//		System.out.println(fee.getDateTime());
+//		long end = ApplicationUtils.getEnd(fee.getDateTime());
+//		long start = ApplicationUtils.clearTime(fee.getDateTime());
+//		System.out.println(start);
+//		Date date = fee.getDateTime();
+//		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+//		String strDate = formatter.format(date);
+//		System.out.println(strDate);
+//		System.out.print(end);
+//		return "save.jsp";
+//	}
 
 }

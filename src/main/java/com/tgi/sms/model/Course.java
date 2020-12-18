@@ -1,6 +1,5 @@
 package com.tgi.sms.model;
 
-
 import java.util.List;
 
 import javax.persistence.Column;
@@ -14,37 +13,32 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="course")
+@Table(name = "course")
 public class Course {
 
 	@Id
 	@GeneratedValue
-	@Column(name="course_id")
+	@Column(name = "course_id")
 	private int CourseId;
-	
-	@Column(name="course_title")
+
+	@Column(name = "course_title")
 	private String CourseTitle;
-	
-	@Column(name="credit_hours")
+
+	@Column(name = "credit_hours")
 	private int CreditHours;
-	
+
 	@ManyToOne
-	@JoinColumn(name="dept_id")
+	@JoinColumn(name = "dept_id")
 	private Department department;
-	
+
 	@OneToMany(mappedBy = "course")
 	private List<Instructor> instructor;
-	
-	@ManyToOne
-	@JoinColumn(name="stud_id")
-	private Student student;
+
+	@OneToMany(mappedBy = "course")
+	private List<Student> student;
 
 	@OneToMany(mappedBy = "course")
 	private List<StudentFeeLog> studentfeelog;
-
-	public Student getStudent() {
-		return student;
-	}
 
 	public List<Instructor> getInstructor() {
 		return instructor;
@@ -52,10 +46,6 @@ public class Course {
 
 	public void setInstructor(List<Instructor> instructor) {
 		this.instructor = instructor;
-	}
-
-	public void setStudent(Student student) {
-		this.student = student;
 	}
 
 	public Course() {
@@ -97,7 +87,7 @@ public class Course {
 	@Override
 	public String toString() {
 		return "Course [CourseId=" + CourseId + ", CourseTitle=" + CourseTitle + ", CreditHours=" + CreditHours
-				+ ", department=" + department + ", student=" + student + "]";
+				+ ", department=" + department + "]";
 	}
 
 }

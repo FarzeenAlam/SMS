@@ -126,11 +126,8 @@ public class FeeControllerCRUD {
 			String tocheck = list.get(i).getInvoiceId();
 			if(tocheck.equals(InvoiceId)) {
 				Course course = list.get(i).getCourse();
-//				StudentFeeLog fee = list.get(i);
 				model.addObject("fee", course);
-//				System.out.println(tocheck);
 			}
-				
 		}
 		return model;
 	}

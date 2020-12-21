@@ -1,6 +1,8 @@
 package com.tgi.sms.utils;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -25,4 +27,12 @@ public class ApplicationUtils {
         c.set(Calendar.MILLISECOND, 0);
         return c.getTime();
     } 
+	
+	public static Date stringtoDate(String DateTime) throws ParseException {
+		
+		Date date = new SimpleDateFormat("yyyy-mm-dd").parse(DateTime);
+		System.out.println(DateTime + "\t" + date);
+		return date;
+	}
+
 }

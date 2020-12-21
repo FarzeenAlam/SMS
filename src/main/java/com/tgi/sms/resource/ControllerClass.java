@@ -2,25 +2,27 @@ package com.tgi.sms.resource;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+
 import java.util.Date;
 import java.util.List;
 
-import javax.transaction.Transaction;
-
 import org.hibernate.Query;
-import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.provider.HibernateUtils;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tgi.sms.model.Admin;
+import com.tgi.sms.model.Building;
 import com.tgi.sms.model.Course;
+import com.tgi.sms.model.Department;
 import com.tgi.sms.model.FeeLog;
+import com.tgi.sms.model.Instructor;
 import com.tgi.sms.model.Student;
 import com.tgi.sms.model.StudentFeeLog;
 import com.tgi.sms.repository.AdminRepo;
@@ -32,6 +34,7 @@ import com.tgi.sms.repository.InstructorRepo;
 import com.tgi.sms.repository.StudentFeeLogRepo;
 import com.tgi.sms.repository.StudentRepo;
 import com.tgi.sms.utils.ApplicationUtils;
+import com.tgi.sms.utils.HibernateUtils;
 
 @Controller
 public class ControllerClass {
@@ -71,48 +74,89 @@ public class ControllerClass {
 		return "dateentry.jsp";
 	}
 
+	@SuppressWarnings("deprecation")
 	@RequestMapping("/searchRecord")
 	public ModelAndView searchReocord(String DateTime) throws ParseException {
 
-		Date date = new SimpleDateFormat("yyyy-mm-dd").parse(DateTime);
-		System.out.println(DateTime + "\t" + date);
+		Date date = ApplicationUtils.stringtoDate(DateTime);
 
 		Date end = ApplicationUtils.getEnd(date);
 		Date start = ApplicationUtils.clearTime(date);
 
+		if (date.before(end))
+			System.out.println("End time compared");
+
+		if (date.after(start))
+			System.out.println("Start time compared");
+
 		System.out.println(start);
 		System.out.println(end);
 
-		List<FeeLog> feelist = feerepo.findAll();
-		List<Course> courselist = crepo.findAll();
-		List<StudentFeeLog> studentfeelist = studentfeerepo.findAll();
+		long a = date.getTime();
+		long b = end.getTime();
+		long c = start.getTime();
+
+		if (a < b && a > c) {
+			System.out.println("Long check true");
+		} else
+			System.out.println("Long check false");
+
+		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+		Session session = sessionFactory.getCurrentSession();
+		session.beginTransaction();
+
+//		Transaction tx = session.beginTransaction();
+		Query query = session.createQuery("from FeeLog");
+//		query.setDate("date", date);
+//		query.setInteger("FeeId", 19);
+		
+		List<FeeLog> list = query.list();
+
+		for (FeeLog feelog : list) {
+			System.out.println(feelog.getFeeId());
+			System.out.println(feelog.getAmount());
+			System.out.println(feelog.getInvoiceId());
+			System.out.println(feelog.getTransactionType());
+			System.out.println(feelog.getDateTime());
+		}
+//		FeeLog fee = (FeeLog) query.uniqueResult();
+//		System.out.println(fee.getAmount() + " " + fee.getTransactionType());
+
+//		List<FeeLog> feelist = feerepo.findAll();
+//		List<Course> courselist = crepo.findAll();
+//		List<StudentFeeLog> studentfeelist = studentfeerepo.findAll();
 
 		ModelAndView model = new ModelAndView("showdatedetails.jsp");
 
-		for (int i = 0; i < feelist.size(); i++) {
-			Timestamp time = feelist.get(i).getDateTime();
-			Date checkdate = time;
-			if (checkdate.equals(date)) {
-//				if(end >= checkdate) {
-				FeeLog feeLog = feelist.get(i);
-				String invoice = feeLog.getInvoiceId();
-				double amount = feeLog.getAmount();
-				String tt = feeLog.getTransactionType();
-				Course course = checkingInvoice(invoice);
-				model.addObject("fee", amount);
-				model.addObject("tt", tt);
-				model.addObject("course", course);
-				System.out.println("Worked");
-//				}
-//				else
-//					System.out.println("Null");
+//		for (int i = 0; i < feelist.size(); i++) {
+//			Timestamp time = feelist.get(i).getDateTime();
+//			long chk = feelist.get(i).getDateTime().getTime();
+//			Date checkdate = time;
+//			long checklong = checkdate.getTime();
+//			if (checklongvalues(chk, b)) {
+//				FeeLog feeLog = feelist.get(i);
+//				String invoice = feeLog.getInvoiceId();
+//				double amount = feeLog.getAmount();
+//				String tt = feeLog.getTransactionType();
+//				Course course = checkingInvoice(invoice);
+//				model.addObject("fee", amount);
+//				model.addObject("tt", tt);
+//				model.addObject("course", course);
+//				System.out.println("Worked");
+//			} else
+//				System.out.println("NULLLLLL");
+//		}
 
-
-			}
-			else
-				System.out.println("NULLLLLL");
-		}
+		sessionFactory.close();
 		return model;
+	}
+
+	private boolean checklongvalues(long checklong, long c) {
+
+		if (checklong > c) {
+			return true;
+		} else
+			return false;
 	}
 
 	public Course checkingInvoice(String InvoiceId) {
@@ -126,6 +170,38 @@ public class ControllerClass {
 		}
 		return course;
 	}
+
+	@SuppressWarnings("deprecation")
+	@RequestMapping("/test")
+	public String checking() {
+
+		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+		Session session = sessionFactory.openSession();
+
+		session.beginTransaction();
+
+		String query = "from FeeLog";
+
+		Query q = session.createQuery(query);
+
+		Query query1 = session.createQuery("from FeeLog where DateTime= :DateTime");
+
+		List<FeeLog> list = q.list();
+
+		for (FeeLog feelog : list) {
+			System.out.println(feelog.getFeeId());
+			System.out.println(feelog.getAmount());
+			System.out.println(feelog.getInvoiceId());
+			System.out.println(feelog.getTransactionType());
+			System.out.println(feelog.getDateTime());
+		}
+
+		sessionFactory.close();
+
+		return "save.jsp";
+
+	}
+
 //	private ModelAndView searchStudentCourse(int id) {
 //		ModelAndView model = new ModelAndView("showFee.jsp");
 //

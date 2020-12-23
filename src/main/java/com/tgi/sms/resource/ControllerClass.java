@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,9 +19,11 @@ import org.hibernate.cfg.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BatchUpdateUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tgi.sms.bean.FeeLogDetailBean;
 import com.tgi.sms.dao.daoClass;
 import com.tgi.sms.model.Admin;
 import com.tgi.sms.model.Building;
@@ -84,28 +87,36 @@ public class ControllerClass {
 		List<FeeLog> list = daoClass.findFeeRecordsAgainstSpecificDate(DateTime);
 		System.out.println("List passed");
 
+		List<FeeLogDetailBean> feedetail = new ArrayList<FeeLogDetailBean>();
 		ModelAndView model = new ModelAndView("showdatedetails.jsp");
 
+		
 		for (FeeLog feelog : list) {
-			System.out.println(feelog.getFeeId());
-			System.out.println(feelog.getAmount());
-			System.out.println(feelog.getInvoiceId());
-			System.out.println(feelog.getTransactionType());
-			System.out.println(feelog.getDateTime());
-			System.out.println(feelog.getStudent().StudentId);
+			Course course = checkingInvoice(feelog.getInvoiceId());
+			String ctitle = course.getCourseTitle();
+			FeeLogDetailBean bean = convertEntityIntoBean(feelog, ctitle);
+			feedetail.add(bean);
+			System.out.println("FEE DETAIL BEAN ON PRINT CHECK IN LOOP");
+			System.out.println(bean);
 		}
 
+		ModelMap map = new ModelMap();
+		map.put("feedetail", feedetail);
+		model.addObject(map);
 		return model;
 	}
 
-	// test function from daoClasss
-	@RequestMapping("/sStudent")
-	private String searchingStudent(int StudentId) {
-		Student student = daoClass.findStudent(StudentId);
-		System.out.println(student);
-		return "save.jsp";
+	private FeeLogDetailBean convertEntityIntoBean(FeeLog fee, String ctitle) {
+		
+		FeeLogDetailBean feelogdetail = new FeeLogDetailBean();
+		feelogdetail.setStudentId(fee.getStudent().StudentId);
+		feelogdetail.setCourseTitle(ctitle);
+		feelogdetail.setAmount(fee.getAmount());
+		feelogdetail.setDateTime(fee.getDateTime());
+		
+		return feelogdetail;
 	}
-
+	
 	public Course checkingInvoice(String InvoiceId) {
 		Course course = null;
 		List<StudentFeeLog> list = studentfeerepo.findAll();
@@ -118,6 +129,13 @@ public class ControllerClass {
 		return course;
 	}
 
+	// test function from daoClasss
+	@RequestMapping("/sStudent")
+	private String searchingStudent(int StudentId) {
+		Student student = daoClass.findStudent(StudentId);
+		System.out.println(student);
+		return "save.jsp";
+	}
 
 	// java.time is new for datetime handling, test try here, it worked
 	@RequestMapping("/testDate")

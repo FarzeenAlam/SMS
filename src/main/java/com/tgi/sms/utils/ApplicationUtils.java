@@ -8,31 +8,37 @@ import java.util.Date;
 
 public class ApplicationUtils {
 
-	public static Date getEnd(java.util.Date date) {
+	public static Timestamp getEnd(Timestamp date) {
         Calendar c = Calendar.getInstance();
-        c.setTime(date);
+        c.setTime(new Date(date.getTime()));
         c.set(Calendar.HOUR_OF_DAY, 23);
         c.set(Calendar.MINUTE, 59);
         c.set(Calendar.SECOND, 59);
         c.set(Calendar.MILLISECOND, 999);
-        return c.getTime();
+        return new Timestamp(c.getTime().getTime());
     }
 	
-	public static Date clearTime(java.util.Date date) {
+	public static Timestamp clearTime(Timestamp date) {
         Calendar c = Calendar.getInstance();
-        c.setTime(date);
+        c.setTime(new Date(date.getTime()));
         c.set(Calendar.HOUR_OF_DAY, 0);
         c.set(Calendar.MINUTE, 0);
         c.set(Calendar.SECOND, 0);
         c.set(Calendar.MILLISECOND, 0);
-        return c.getTime();
+        return new Timestamp(c.getTime().getTime());
     } 
 	
-	public static Date stringtoDate(String DateTime) throws ParseException {
+	public static Timestamp stringtoDate(String DateTime) throws ParseException {
 		
-		Date date = new SimpleDateFormat("yyyy-mm-dd").parse(DateTime);
-		System.out.println(DateTime + "\t" + date);
-		return date;
+		
+		try{
+		    SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy hh:mm");
+		    Date parsedDate = dateFormat.parse(DateTime);
+		    return new java.sql.Timestamp(parsedDate.getTime());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

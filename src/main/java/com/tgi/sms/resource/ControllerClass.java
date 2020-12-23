@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tgi.sms.dao.daoClass;
 import com.tgi.sms.model.Admin;
 import com.tgi.sms.model.Building;
 import com.tgi.sms.model.Course;
@@ -34,7 +35,6 @@ import com.tgi.sms.repository.InstructorRepo;
 import com.tgi.sms.repository.StudentFeeLogRepo;
 import com.tgi.sms.repository.StudentRepo;
 import com.tgi.sms.utils.ApplicationUtils;
-import com.tgi.sms.utils.HibernateUtils;
 
 @Controller
 public class ControllerClass {
@@ -62,6 +62,9 @@ public class ControllerClass {
 
 	@Autowired
 	StudentFeeLogRepo studentfeerepo;
+	
+//	@Autowired
+//	daoClass dao;
 
 	// start of the application
 	@RequestMapping("/home")
@@ -77,41 +80,11 @@ public class ControllerClass {
 	@SuppressWarnings("deprecation")
 	@RequestMapping("/searchRecord")
 	public ModelAndView searchReocord(String DateTime) throws ParseException {
-
-		Date date = ApplicationUtils.stringtoDate(DateTime);
-
-		Date end = ApplicationUtils.getEnd(date);
-		Date start = ApplicationUtils.clearTime(date);
-
-		if (date.before(end))
-			System.out.println("End time compared");
-
-		if (date.after(start))
-			System.out.println("Start time compared");
-
-		System.out.println(start);
-		System.out.println(end);
-
-		long a = date.getTime();
-		long b = end.getTime();
-		long c = start.getTime();
-
-		if (a < b && a > c) {
-			System.out.println("Long check true");
-		} else
-			System.out.println("Long check false");
-
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
-		Session session = sessionFactory.getCurrentSession();
-		session.beginTransaction();
-
-//		Transaction tx = session.beginTransaction();
-		Query query = session.createQuery("from FeeLog");
-//		query.setDate("date", date);
-//		query.setInteger("FeeId", 19);
 		
-		List<FeeLog> list = query.list();
-
+		List<FeeLog> list = daoClass.findFeeRecordsAgainstSpecificDate(DateTime);
+		
+		System.out.println("List passed");
+		
 		for (FeeLog feelog : list) {
 			System.out.println(feelog.getFeeId());
 			System.out.println(feelog.getAmount());
@@ -119,6 +92,51 @@ public class ControllerClass {
 			System.out.println(feelog.getTransactionType());
 			System.out.println(feelog.getDateTime());
 		}
+		
+		
+//		List<FeeLog> list = daoClass.findFeeRecordsAgainstSpecificDate(DateTime);
+//
+//		Date date = ApplicationUtils.stringtoDate(DateTime);
+//
+//		Date end = ApplicationUtils.getEnd(date);
+//		Date start = ApplicationUtils.clearTime(date);
+//
+//		if (date.before(end))
+//			System.out.println("End time compared");
+//
+//		if (date.after(start))
+//			System.out.println("Start time compared");
+//
+//		System.out.println(start);
+//		System.out.println(end);
+//
+//		long a = date.getTime();
+//		long b = end.getTime();
+//		long c = start.getTime();
+//
+//		if (a < b && a > c) {
+//			System.out.println("Long check true");
+//		} else
+//			System.out.println("Long check false");
+//
+//		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+//		Session session = sessionFactory.getCurrentSession();
+//		session.beginTransaction();
+
+//		Transaction tx = session.beginTransaction();
+//		Query query = session.createQuery("from FeeLog");
+//		query.setDate("date", date);
+//		query.setInteger("FeeId", 19);
+		
+//		List<FeeLog> list = query.list();
+//
+//		for (FeeLog feelog : list) {
+//			System.out.println(feelog.getFeeId());
+//			System.out.println(feelog.getAmount());
+//			System.out.println(feelog.getInvoiceId());
+//			System.out.println(feelog.getTransactionType());
+//			System.out.println(feelog.getDateTime());
+//		}
 //		FeeLog fee = (FeeLog) query.uniqueResult();
 //		System.out.println(fee.getAmount() + " " + fee.getTransactionType());
 
@@ -147,10 +165,17 @@ public class ControllerClass {
 //				System.out.println("NULLLLLL");
 //		}
 
-		sessionFactory.close();
+//		sessionFactory.close();
 		return model;
 	}
 
+	@RequestMapping("/sStudent")
+	private String searchingStudent(int StudentId) {
+		Student student = daoClass.findStudent(StudentId);
+		System.out.println(student);
+		return "save.jsp";
+	}
+	
 	private boolean checklongvalues(long checklong, long c) {
 
 		if (checklong > c) {
@@ -175,18 +200,35 @@ public class ControllerClass {
 	@RequestMapping("/test")
 	public String checking() {
 
-		SessionFactory sessionFactory = HibernateUtils.getSessionFactory();
+		SessionFactory sessionFactory = daoClass.getSessionFactory();
 		Session session = sessionFactory.openSession();
 
 		session.beginTransaction();
+		
+		System.out.println("Session opened in test");
+
 
 		String query = "from FeeLog";
 
+//		Timestamp t = feerepo.findById(19).get().getDateTime();
 		Query q = session.createQuery(query);
-
-		Query query1 = session.createQuery("from FeeLog where DateTime= :DateTime");
-
-		List<FeeLog> list = q.list();
+		
+		FeeLog f = feerepo.findById(19).orElse(null);
+		Timestamp t = f.getDateTime();
+		
+		String in = "IN-1608206777291";
+		Query query1 = session.createQuery("from FeeLog where DateTime= :id");
+		query1.setTimestamp("id", t);
+		
+//		FeeLog feelog = (FeeLog) query1.uniqueResult();
+//		
+//		System.out.println(feelog.getFeeId());
+//		System.out.println(feelog.getAmount());
+//		System.out.println(feelog.getInvoiceId());
+//		System.out.println(feelog.getTransactionType());
+//		System.out.println(feelog.getDateTime());
+//		
+		List<FeeLog> list = query1.list();
 
 		for (FeeLog feelog : list) {
 			System.out.println(feelog.getFeeId());
@@ -196,6 +238,7 @@ public class ControllerClass {
 			System.out.println(feelog.getDateTime());
 		}
 
+		session.close();
 		sessionFactory.close();
 
 		return "save.jsp";

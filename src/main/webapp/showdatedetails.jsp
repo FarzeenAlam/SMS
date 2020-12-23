@@ -24,6 +24,7 @@ font-size:25px;
 	<h2>Invoice Details</h2>
 	</header>
 	<div class="myDiv">
+	
 	Amount = ${fee}
 	Transaction Type = ${tt}
 	${course}

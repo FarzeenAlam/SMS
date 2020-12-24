@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -39,12 +39,12 @@ header {
 				</tr>
 			</thead>
 			<tbody>
-				<c:forEach items="${feedetail}" var="feedetail">
+				<c:forEach items="${feedetail}" var="fee">
 					<tr>
-						<td>${feedetail.StudentId}</td>
-						<td>${feedetail.CourseTitle}</td>
-						<td>${feedetail.Amount}</td>
-						<td>${feedetail.DateTime}</td>
+						<td><c:out value="#{fee.StudentId}"/></td>
+						<td><c:out value="#{fee.CourseTitle}"/></td>
+						<td><c:out value="#{fee.Amount}"/></td>
+						<td><c:out value="#{fee.DateTime}"/></td>
 					</tr>
 				</c:forEach>
 			</tbody>

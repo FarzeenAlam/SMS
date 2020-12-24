@@ -8,8 +8,10 @@ import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -88,6 +90,7 @@ public class ControllerClass {
 		System.out.println("List passed");
 
 		List<FeeLogDetailBean> feedetail = new ArrayList<FeeLogDetailBean>();
+	
 		ModelAndView model = new ModelAndView("showdatedetails.jsp");
 
 		
@@ -100,16 +103,19 @@ public class ControllerClass {
 			System.out.println(bean);
 		}
 
-		ModelMap map = new ModelMap();
-		map.put("feedetail", feedetail);
-		model.addObject(map);
+		System.out.println(feedetail);
+		//ModelMap map = new ModelMap();
+		//map.put("feedetail", feedetail);
+		//model.addAllObjects(map);
+		//model.addObject(map);
+		model.addObject("feedetail", feedetail);
 		return model;
 	}
 
 	private FeeLogDetailBean convertEntityIntoBean(FeeLog fee, String ctitle) {
 		
 		FeeLogDetailBean feelogdetail = new FeeLogDetailBean();
-		feelogdetail.setStudentId(fee.getStudent().StudentId);
+		feelogdetail.setStudentId(fee.getStudent().getStudentId());
 		feelogdetail.setCourseTitle(ctitle);
 		feelogdetail.setAmount(fee.getAmount());
 		feelogdetail.setDateTime(fee.getDateTime());

@@ -4,52 +4,41 @@ import java.sql.Timestamp;
 
 public class FeeLogDetailBean {
 
-	public int StudentId;
+	private int StudentId;
 	private String CourseTitle;
 	private double Amount;
 	private Timestamp DateTime;
-
-	public FeeLogDetailBean() {
-		super();
-	}
-
-	public FeeLogDetailBean(int studentId, String courseTitle, double amount, Timestamp dateTime) {
-		StudentId = studentId;
-		CourseTitle = courseTitle;
-		Amount = amount;
-		DateTime = dateTime;
-	}
 
 	public int getStudentId() {
 		return StudentId;
 	}
 
-	public void setStudentId(int studentId) {
-		StudentId = studentId;
+	public void setStudentId(int StudentId) {
+		this.StudentId = StudentId;
 	}
 
 	public String getCourseTitle() {
 		return CourseTitle;
 	}
 
-	public void setCourseTitle(String courseTitle) {
-		CourseTitle = courseTitle;
+	public void setCourseTitle(String CourseTitle) {
+		this.CourseTitle = CourseTitle;
 	}
 
 	public double getAmount() {
 		return Amount;
 	}
 
-	public void setAmount(double amount) {
-		Amount = amount;
+	public void setAmount(double Amount) {
+		this.Amount = Amount;
 	}
 
 	public Timestamp getDateTime() {
 		return DateTime;
 	}
 
-	public void setDateTime(Timestamp dateTime) {
-		DateTime = dateTime;
+	public void setDateTime(Timestamp DateTime) {
+		this.DateTime = DateTime;
 	}
 
 	@Override
@@ -57,5 +46,6 @@ public class FeeLogDetailBean {
 		return "FeeLogDetailBean [StudentId=" + StudentId + ", CourseTitle=" + CourseTitle + ", Amount=" + Amount
 				+ ", DateTime=" + DateTime + "]";
 	}
+
 
 }

@@ -3,9 +3,6 @@ package com.tgi.sms.bean;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.tgi.sms.model.Course;
-import com.tgi.sms.model.Student;
-
 public class AddFeeBean {
 
 	private int FeeId;
@@ -14,7 +11,7 @@ public class AddFeeBean {
 	private String TransactionType;
 	private String InvoiceId;
 	private int student;
-	
+
 	private List<Integer> coursesList;
 
 	public int getFeeId() {
@@ -79,9 +76,5 @@ public class AddFeeBean {
 				+ TransactionType + ", InvoiceId=" + InvoiceId + ", student=" + student + ", coursesList=" + coursesList
 				+ "]";
 	}
-	
-	
-	
-	
 
 }

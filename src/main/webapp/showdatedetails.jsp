@@ -14,7 +14,9 @@ header {
 	font-size: 35px;
 	color: white;
 }
-
+table, th, td {
+  border: 1px solid black;
+}
 .myDiv {
 	text-align: center;
 	font-size: 25px;
@@ -26,7 +28,7 @@ header {
 		<h2>Invoice Details</h2>
 	</header>
 	<div class="myDiv">
-		<table class="table table-striped">
+		<table class="myDiv" style="width:100%">
 			<caption>
 				<h3>FeeLog Detail</h3>
 			</caption>
@@ -41,10 +43,10 @@ header {
 			<tbody>
 				<c:forEach items="${feedetail}" var="fee">
 					<tr>
-						<td><c:out value="#{fee.StudentId}"/></td>
-						<td><c:out value="#{fee.CourseTitle}"/></td>
-						<td><c:out value="#{fee.Amount}"/></td>
-						<td><c:out value="#{fee.DateTime}"/></td>
+						<td><c:out value="${fee.studentId}"/></td>
+						<td><c:out value="${fee.courseTitle}"/></td>
+						<td><c:out value="${fee.amount}"/></td>
+						<td><c:out value="${fee.dateTime}"/></td>
 					</tr>
 				</c:forEach>
 			</tbody>

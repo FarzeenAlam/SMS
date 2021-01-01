@@ -156,5 +156,17 @@ public class ControllerClass {
 
 		return "save.jsp";
 	}
+	
+	//Testing if I still remember what I gave to Zaira
+	@RequestMapping("loop")
+	public String testloop() {
+		for(int i = 0; i < 6; i++) {
+			for(int j = 0; j <=i; j++) {
+				System.out.print("*");
+			}
+			System.out.println();
+		}
+		return "save.jsp";
+	}
 
 }

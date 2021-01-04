@@ -51,20 +51,18 @@ public class MongoController {
 		return adminrepo.findByPassword(password);
 	}
 	
-	@RequestMapping("/try")
-	public Admin getbyNamePassword(){
-		String name = new String("Zeen");
-		String password = new String("1234");
+	@RequestMapping("/try/{name}/{pass}")
+	public Admin getbyNamePassword(@PathVariable(name = "name") String name, @PathVariable(name = "pass")String pass){
 		Admin admin = null;
+		Admin topost = null;
 		List<Admin> a = adminrepo.findAll();
 		for(int i = 0; i < a.size(); i++) {
 			admin = a.get(i);
-			if(admin.getName().equals(name)) {
-				if(admin.getPassword().equals(password))
-					break;
+			if(admin.getName().equals(name) && admin.getPassword().equals(pass)) {
+				topost = admin;
 			}
 		}
-		return admin;
+		return topost;
 	}
 
 	@PostMapping("/add")

@@ -34,11 +34,12 @@ public class StudentInfoControllerCRUD {
 	}
 
 	//Edit operation
-	@RequestMapping("/editingStudentent")
+	@RequestMapping("/editingStudent")
 	public String editingStudent(Student s) {
 		int id = s.getStudentId();
 		if (studrepo.findById(id).isPresent()) {
 			Student news = studrepo.findById(s.getStudentId()).orElse(null);
+			news.setStudentStatus(s.StudentStatus);
 			news.setStudentName(s.getStudentName());
 			news.setDepartment(s.getDepartment());
 			studrepo.save(s);

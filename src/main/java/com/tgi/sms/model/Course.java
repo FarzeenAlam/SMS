@@ -27,6 +27,17 @@ public class Course {
 	@Column(name = "credit_hours")
 	private int CreditHours;
 
+	@Column(name = "status")
+	public boolean CourseStatus;
+
+	public boolean isCourseStatus() {
+		return CourseStatus;
+	}
+
+	public void setCourseStatus(boolean courseStatus) {
+		CourseStatus = courseStatus;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "dept_id")
 	private Department department;
@@ -87,7 +98,7 @@ public class Course {
 	@Override
 	public String toString() {
 		return "Course [CourseId=" + CourseId + ", CourseTitle=" + CourseTitle + ", CreditHours=" + CreditHours
-				+ ", department=" + department + "]";
+				+ ", CourseStatus=" + CourseStatus + ", department=" + department + "]";
 	}
 
 }

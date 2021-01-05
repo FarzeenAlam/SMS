@@ -27,6 +27,10 @@ text-align: center;
 	<form action="editingCourse" method="post">
 	<fieldset>
 	<legend style="font-size:35px;">Enter details to edit a course</legend>
+	
+	<label style="font-size:20px;">Enter course id:</label><br>
+	<input type = "number" name="CourseId" required><br><br>
+	
 	<label style="font-size:20px;">Enter course title:</label><br>
 	<input type = "text" name="CourseTitle" required><br><br>
 	
@@ -36,17 +40,11 @@ text-align: center;
 	<label style="font-size:20px;">Enter department id:</label><br>
 	<input type = "number" name="department" required><br><br>
 	
-	<label style="font-size:20px;">Enter student id:</label><br>
-	<input type = "number" name="student" required><br><br>
-	
-	<label style="font-size:20px;">Enter student id:</label><br>
-	<input type = "number" name="student"><br><br>
-	
-	<label style="font-size:20px;">Enter fee id:</label><br>
-	<input type = "number" name="feelog" required><br><br>
-	
-	<label style="font-size:20px;">Enter fee id:</label><br>
-	<input type = "number" name="feelog"><br><br>
+	<label style="font-size:20px;">Select Course Status:</label>	
+	<input type="radio" id="active" name="CourseStatus" value="true" required="required">
+	<label for="active">Active</label> 
+	<input type="radio" id="deactive" name="CourseStatus" value="false"> 
+	<label for="deactive">Deactivated</label><br>
 	
 	<input type = "submit" value="Update" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	<input type = "reset" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">

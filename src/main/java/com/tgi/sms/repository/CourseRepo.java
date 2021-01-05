@@ -6,4 +6,6 @@ import com.tgi.sms.model.Course;
 
 public interface CourseRepo extends JpaRepository<Course, Integer>{
 
+	Course findbyName(String name);
+
 }

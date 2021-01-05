@@ -74,7 +74,9 @@ box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 	class="btn2" value = "Course" name="course"/><br>
 	</form>
 	</div>
-	
+<br>
+<br>
+<br>
 	<div class="myDiv">
 	<form action="department">
 	<input type="submit" style="background-color: #4CAF50;"
@@ -86,7 +88,7 @@ box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 <br>
 	<div class="myDiv">
 	<form action="student">
-	<input type="submit" style="background-color: #4CAF50;"
+	<input type="submit" style="background-color: #008CBA;"
 	class="btn2" value = "Student" name="student"/>
 	</form>
  	</div>

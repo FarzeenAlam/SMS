@@ -25,6 +25,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tgi.sms.bean.CourseBean;
 import com.tgi.sms.bean.FeeLogDetailBean;
 import com.tgi.sms.dao.daoClass;
 import com.tgi.sms.model.Admin;
@@ -82,17 +83,14 @@ public class ControllerClass {
 		return "dateentry.jsp";
 	}
 
-//date passed here and returned here
+	//date passed here and returned here
 	@RequestMapping("/searchRecord")
 	public ModelAndView searchReocord(String DateTime) throws ParseException {
 
 		List<FeeLog> list = daoClass.findFeeRecordsAgainstSpecificDate(DateTime);
 		System.out.println("List passed");
-
 		List<FeeLogDetailBean> feedetail = new ArrayList<FeeLogDetailBean>();
-	
 		ModelAndView model = new ModelAndView("showdatedetails.jsp");
-
 		
 		for (FeeLog feelog : list) {
 			Course course = checkingInvoice(feelog.getInvoiceId());
@@ -157,6 +155,48 @@ public class ControllerClass {
 		return "save.jsp";
 	}
 	
+	@RequestMapping("/status")
+	public ModelAndView status() {
+		ModelAndView model = new ModelAndView("statuspage.jsp");
+		List<Course> getlist = crepo.findAll();
+		List<CourseBean> bean = new ArrayList<CourseBean>();
+		for(Course c : getlist) {
+			CourseBean cb = new CourseBean();
+			cb.setCourseTitle(c.getCourseTitle());
+			bean.add(cb);
+		}
+		System.out.println(bean);
+		model.addObject("courses", bean);
+		return model;
+	}
+	
+	@RequestMapping("/viewstatus")
+	public String viewstatus(CourseBean bean) {
+		boolean status = bean.getCourseStatus();
+		String name = bean.getCourseTitle();
+		
+		List<Integer> ids = new ArrayList<Integer>();
+		List<Student> student = new ArrayList<Student>();
+		List<Course> course  = crepo.findAll();
+		Course co = crepo.findbyName(name);
+		int id = co.getCourseId();
+		for(Student s : student) {
+			if(s.StudentStatus==status) {
+				if(s.getCourse().getCourseId()== id) {
+					ids.add(s.StudentId);
+				}
+			}
+		}
+		calculate(ids, id);
+		return null;
+	}
+	
+	private void calculate(List<Integer> ids, int id) {
+		List<FeeLog> list = daoClass.findFeeRecordsAgainstSpecificStudentId(ids);
+		List<Date> date = daoClass.findLastFeeDate(list);
+		
+	}
+
 	//Testing if I still remember what I gave to Zaira
 	@RequestMapping("loop")
 	public String testloop() {

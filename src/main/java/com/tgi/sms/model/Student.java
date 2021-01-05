@@ -14,25 +14,36 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="student")
+@Table(name = "student")
 public class Student {
 
 	@Id
 	@GeneratedValue
-	@Column(name="stud_id")
+	@Column(name = "stud_id")
 	public int StudentId;
-	
-	@Column(name="stud_name")
+
+	@Column(name = "stud_name")
 	public String StudentName;
-	
+
+	@Column(name = "status")
+	public boolean StudentStatus;
+
+	public boolean isStudentStatus() {
+		return StudentStatus;
+	}
+
+	public void setStudentStatus(boolean studentStatus) {
+		StudentStatus = studentStatus;
+	}
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="dept_id")
+	@JoinColumn(name = "dept_id")
 	public Department department;
-	
+
 	@ManyToOne
-	@JoinColumn(name="course_id")
+	@JoinColumn(name = "course_id")
 	private Course course;
-	
+
 	@OneToOne(mappedBy = "student")
 	private FeeLog feelog;
 
@@ -50,7 +61,7 @@ public class Student {
 	public void setCourse(Course course) {
 		this.course = course;
 	}
-	
+
 	public FeeLog getFeelog() {
 		return feelog;
 	}
@@ -90,10 +101,12 @@ public class Student {
 	public void setDepartment(Department department) {
 		this.department = department;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Student [StudentId=" + StudentId + ", StudentName=" + StudentName + ", department=" + department
-				+ ", feelog=" + feelog + ", instructor=" + instructor + ", course=" + course + "]";
+		return "Student [StudentId=" + StudentId + ", StudentName=" + StudentName + ", StudentStatus=" + StudentStatus
+				+ ", department=" + department + ", course=" + course + ", feelog=" + feelog + ", instructor="
+				+ instructor + "]";
 	}
+
 }

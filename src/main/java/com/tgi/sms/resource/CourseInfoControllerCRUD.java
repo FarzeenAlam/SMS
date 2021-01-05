@@ -39,6 +39,7 @@ public class CourseInfoControllerCRUD {
 		int id = c.getCourseId();
 		if (crepo.findById(id).isPresent()) {
 			Course newc = crepo.findById(c.getCourseId()).orElse(null);
+			newc.setCourseStatus(c.CourseStatus);
 			newc.setCourseTitle(c.getCourseTitle());
 			newc.setCreditHours(c.getCreditHours());
 			newc.setDepartment(c.getDepartment());

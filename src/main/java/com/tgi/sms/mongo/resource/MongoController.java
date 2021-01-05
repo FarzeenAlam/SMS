@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tgi.sms.mongo.model.Admin;
@@ -27,31 +26,36 @@ public class MongoController {
 		this.adminrepo = adminrepo;
 	}
 
+	//Get all records
 	@GetMapping("/admins")
 	public List<Admin> getAllAdmins() {
 		LOG.info("Getting all the data");
 		return adminrepo.findAll();
 	}
 
+	//Get record by id
 	@GetMapping("/{id}")
 	public Admin getAdmin(@PathVariable String id) {
 		LOG.info("Getting one admin with id: {}", id);
 		return adminrepo.findById(id).orElse(null);
 	}
 	
+	//Get record by name
 	@GetMapping("/name/{name}")
 	public List<Admin> getAdminbyName(@PathVariable String name) {
 		LOG.info("Getting one admin with name: {}", name);
 		return adminrepo.findByName(name);
 	}
 	
+	//Get record by password
 	@GetMapping("/pass/{password}")
 	public List<Admin> getAdminbyPassword(@PathVariable String password) {
 		LOG.info("Getting one admin with password: {}", password);
 		return adminrepo.findByPassword(password);
 	}
 	
-	@RequestMapping("/try/{name}/{pass}")
+	//get record by name and password
+	@GetMapping("/try/{name}/{pass}")
 	public Admin getbyNamePassword(@PathVariable(name = "name") String name, @PathVariable(name = "pass")String pass){
 		Admin admin = null;
 		Admin topost = null;
@@ -65,12 +69,14 @@ public class MongoController {
 		return topost;
 	}
 
+	//add a new record
 	@PostMapping("/add")
 	public Admin addAdmin(@RequestBody Admin admin) {
 		LOG.info("Saving admin");
 		return adminrepo.save(admin);
 	}
 
+	//update an existing record
 	@PutMapping("/")
 	public void updateAdmin(@RequestBody Admin newadmin) {
 		String id = newadmin.getId();
@@ -88,6 +94,7 @@ public class MongoController {
 			LOG.info("DATA NOT FOUND!");
 	}
 	
+	//delete a record
 	@DeleteMapping("del/{id}")
 	public void deleteAdmin(@PathVariable String id) {
 		if(adminrepo.findById(id).isPresent()) {

@@ -117,4 +117,32 @@ public class daoClass {
 		return stud;
 	}
 
+	public static List<FeeLog> findFeeRecordsAgainstSpecificStudentId(List<Integer> ids) {
+		SessionFactory sessionFactory = getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		System.out.println("Session opened");
+		
+		Query q = session.createQuery("from FeeLog where StudentId in (:StudentId)");
+		q.setParameterList("StudentId", ids);
+		
+		List<FeeLog> list = q.list();
+		System.out.println("List returned");
+
+		endSession();
+		session.close();
+
+		return list;
+	}
+
+	public static List<Date> findLastFeeDate(List<FeeLog> list) {
+		
+		
+		SessionFactory sessionFactory = getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		System.out.println("Session opened");
+		return null;
+	}
+
 }

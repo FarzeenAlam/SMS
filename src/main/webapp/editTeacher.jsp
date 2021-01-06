@@ -45,6 +45,10 @@ text-align: center;
 	<input type = "number" name="department" required style="padding: 8px 32px;">
 	<br><br>
 	
+	<label style="font-size:20px;">Enter course id:</label><br>
+	<input type = "number" name="course" required style="padding: 8px 32px;">
+	<br><br>
+	
 	<input type = "submit" value="Update" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	<input type = "reset" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	

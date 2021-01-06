@@ -12,6 +12,8 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import com.tgi.sms.bean.DepartmentBean;
+import com.tgi.sms.bean.DisplayBean;
 import com.tgi.sms.model.Admin;
 import com.tgi.sms.model.Building;
 import com.tgi.sms.model.Course;
@@ -143,6 +145,56 @@ public class daoClass {
 		session.beginTransaction();
 		System.out.println("Session opened");
 		return null;
+	}
+
+	public static Department findDepartmentId(String departmentName) {
+		SessionFactory sessionFactory = getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		System.out.println("Session opened");
+		Query q = session.createQuery("from Department where DepartmentName= :departmentName");
+		q.setParameter("departmentName", departmentName);
+		Department department = (Department) q.uniqueResult();
+		endSession();
+		session.close();
+		return department;
+	}
+
+	public static List<Course> findCoursebyDeptId(int deptId) {
+		SessionFactory sessionFactory = getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		System.out.println("Session opened");
+		Query q = session.createQuery("from Course where department= :department");
+		q.setParameter("department", deptId);
+		List<Course> list = q.list();
+		endSession();
+		session.close();
+		return list;
+	}
+
+	public static int getCourseId(String name) {
+		SessionFactory sessionFactory = getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		System.out.println("Session opened");
+		Query q = session.createQuery("from Course where CourseTitle= :CourseTitle");
+		q.setParameter("CourseTitle", name);
+		Course course = (Course) q.uniqueResult();
+		int id = course.getCourseId();
+		return id;
+	}
+
+	public static List<Student> getStudents(boolean status, int id) {
+		SessionFactory sessionFactory = getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		System.out.println("Session opened");
+		Query q = session.createQuery("from Student where StudentStatus= :StudentStatus and course= :course");
+		q.setParameter("StudentStatus", status);
+		q.setParameter("course", id);
+		List<Student> student = q.list();
+		return student;
 	}
 
 }

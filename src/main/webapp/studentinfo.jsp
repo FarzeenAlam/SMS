@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -50,7 +52,7 @@ box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 	<div class="myDiv">
 	<form action="addStudent">
 	<input type="submit" style="background-color: #4CAF50;"
-	class="btn1" value = "Register" name="add"/>
+	class="btn1" value = "Add Student" name="add"/>
 	</form>
  	</div>
 <br>
@@ -59,7 +61,7 @@ box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 	<div class="myDiv">
   	<form action="editStudent">
 	<input type="submit" style="background-color: #008CBA;" 
-	class="btn2" value = "Update" name="edit"/><br>
+	class="btn2" value = "Update Student" name="edit"/><br>
 	</form>
 	</div>
 <br>
@@ -68,7 +70,7 @@ box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 	<div class="myDiv">
 	<form action="searchStudent">
 	<input type="submit" style="background-color: #e7e7e7;" 
-  	class="btn1" value = "Search" name="search"/><br>
+  	class="btn1" value = "Search Student" name="search"/><br>
   	</form>
 	</div>
 	<br>
@@ -77,7 +79,7 @@ box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 	<div class="myDiv">
 	<form action="deleteStudent">
 	<input type="submit" style="background-color: #555555;" 
- 	class="btn2" value = "Delete" name="delete"/><br>
+ 	class="btn2" value = "Delete Student" name="delete"/><br>
   	</form>
 	</div>
 

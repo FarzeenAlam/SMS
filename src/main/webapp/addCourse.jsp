@@ -36,12 +36,6 @@ text-align: center;
 	<label style="font-size:20px;">Enter department id:</label><br>
 	<input type = "number" name="department" required><br><br>
 	
-	<label style="font-size:20px;">Select Course Status:</label>	
-	<input type="radio" id="active" name="CourseStatus" value="true" required="required">
-	<label for="active">Active</label> 
-	<input type="radio" id="deactive" name="CourseStatus" value="false"> 
-	<label for="deactive">Deactivated</label><br>
-	
 	<input type = "submit" value="Add" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	<input type = "reset" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	

@@ -32,15 +32,15 @@ header {
 				<legend style="font-size: 35px;">Choose your options and
 					click Display</legend>
 				<label style="font-size: 20px;">Choose course status:</label> 
-				<input type="radio" id="active" name="courseStatus" value="true" required="required">
+				<input type="radio" id="active" name="studentStatus" value="true" required="required">
 				<label for="active">Active</label> 
-				<input type="radio" id="deactive" name="courseStatus" value="false"> 
+				<input type="radio" id="deactive" name="studentStatus" value="false"> 
 				<label for="deactive">Deactivated</label><br><br>
 				
 				<label style="font-size: 20px;">Course Name:</label>
 				<select name="courseTitle" id="courseTitle" required >
 				<c:forEach items="${courses}" var="course">
-				<option value="${courses}">${course.courseTitle}</option>
+				<option value="${course.courseTitle}">${course.courseTitle}</option>
 				</c:forEach>
 				</select>
 				<br><br>

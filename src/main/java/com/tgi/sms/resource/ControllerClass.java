@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tgi.sms.bean.CourseBean;
+import com.tgi.sms.bean.DisplayBean;
 import com.tgi.sms.bean.FeeLogDetailBean;
 import com.tgi.sms.dao.daoClass;
 import com.tgi.sms.model.Admin;
@@ -172,24 +173,37 @@ public class ControllerClass {
 	
 	@RequestMapping("/viewstatus")
 	public String viewstatus(CourseBean bean) {
-		boolean status = bean.getCourseStatus();
+		boolean status = bean.isStudentStatus();
 		String name = bean.getCourseTitle();
-		
-		List<Integer> ids = new ArrayList<Integer>();
-		List<Student> student = new ArrayList<Student>();
-		List<Course> course  = crepo.findAll();
-		Course co = crepo.findbyName(name);
-		int id = co.getCourseId();
-		for(Student s : student) {
-			if(s.StudentStatus==status) {
-				if(s.getCourse().getCourseId()== id) {
-					ids.add(s.StudentId);
-				}
-			}
-		}
-		calculate(ids, id);
-		return null;
+		int id = daoClass.getCourseId(name);
+		List<Student> studentlist = daoClass.getStudents(status,id);
+		System.out.println(id);
+		System.out.println(name);
+		System.out.println(status);
+		System.out.println(studentlist);
+		return "save.jsp";
 	}
+	
+//	@RequestMapping("/viewstatus")
+//	public String viewstatus(CourseBean bean) {
+//		boolean status = bean.getCourseStatus();
+//		String name = bean.getCourseTitle();
+//		
+//		List<Integer> ids = new ArrayList<Integer>();
+//		List<Student> student = new ArrayList<Student>();
+//		List<Course> course  = crepo.findAll();
+//	//	Course co = crepo.findbyName(name);
+//	//	int id = co.getCourseId();
+//		for(Student s : student) {
+//			if(s.StudentStatus==status) {
+//				if(s.getCourse().getCourseId()== id) {
+//					ids.add(s.StudentId);
+//				}
+//			}
+//		}
+//		calculate(ids, id);
+//		return null;
+//	}
 	
 	private void calculate(List<Integer> ids, int id) {
 		List<FeeLog> list = daoClass.findFeeRecordsAgainstSpecificStudentId(ids);

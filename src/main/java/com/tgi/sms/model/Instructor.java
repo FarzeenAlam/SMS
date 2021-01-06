@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -29,20 +30,16 @@ public class Instructor {
 	@JoinColumn(name="dept_id")
 	public Department department;
 	
-	@ManyToOne
-	@JoinColumn(name="course_id")
+	@OneToOne
+	@JoinColumn(name="course_id", referencedColumnName = "course_id")
 	private Course course;
 
-	@ManyToOne
-	@JoinColumn(name="stud_id")
-	private Student student;
+	public Course getCourse() {
+		return course;
+	}
 
 	public void setCourse(Course course) {
 		this.course = course;
-	}
-
-	public void setStudent(Student student) {
-		this.student = student;
 	}
 
 	public Instructor() {
@@ -84,8 +81,7 @@ public class Instructor {
 	@Override
 	public String toString() {
 		return "Instructor [InstructorId=" + InstructorId + ", InstructorName=" + InstructorName + ", Salary=" + Salary
-				+ ", department=" + department + ", course=" + course + ", student=" + student + "]";
+				+ ", department=" + department + ", course=" + course + "]";
 	}
 
-	
 }

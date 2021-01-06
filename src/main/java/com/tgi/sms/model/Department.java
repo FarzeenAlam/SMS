@@ -11,27 +11,27 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="department")
+@Table(name = "department")
 public class Department {
 
 	@Id
 	@GeneratedValue
-	@Column(name="dept_id")
+	@Column(name = "dept_id")
 	private int DepartmentId;
-	
-	@Column(name="dept_name")
+
+	@Column(name = "dept_name")
 	private String DepartmentName;
-	
-	@OneToOne(mappedBy="department")
+
+	@OneToOne(mappedBy = "department")
 	private Building building;
-	
-	@OneToMany(mappedBy="department")
+
+	@OneToMany(mappedBy = "department")
 	private List<Course> course;
-	
-	@OneToMany(mappedBy="department")
+
+	@OneToMany(mappedBy = "department")
 	private List<Instructor> instructor;
-	
-	@OneToMany(mappedBy="department")
+
+	@OneToMany(mappedBy = "department")
 	private List<Student> student;
 
 	public Department() {
@@ -52,38 +52,6 @@ public class Department {
 
 	public void setDepartmentName(String departmentName) {
 		DepartmentName = departmentName;
-	}
-
-	public Building getBuilding() {
-		return building;
-	}
-
-	public void setBuilding(Building building) {
-		this.building = building;
-	}
-
-	public List<Course> getCourse() {
-		return course;
-	}
-
-	public void setCourse(List<Course> course) {
-		this.course = course;
-	}
-
-	public List<Instructor> getInstructor() {
-		return instructor;
-	}
-
-	public void setInstructor(List<Instructor> instructor) {
-		this.instructor = instructor;
-	}
-
-	public List<Student> getStudent() {
-		return student;
-	}
-
-	public void setStudent(List<Student> student) {
-		this.student = student;
 	}
 
 }

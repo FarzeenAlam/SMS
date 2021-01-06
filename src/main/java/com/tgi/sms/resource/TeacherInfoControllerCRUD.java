@@ -43,6 +43,8 @@ public class TeacherInfoControllerCRUD {
 			newinst.setInstructorName(inst.getInstructorName());
 			newinst.setSalary(inst.getSalary());
 			newinst.setDepartment(inst.getDepartment());
+			newinst.setCourse(inst.getCourse());
+			newinst.setCourse(inst.getCourse());
 			instrepo.save(newinst);
 			return "updated.jsp";
 		} else

@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -27,37 +28,18 @@ public class Course {
 	@Column(name = "credit_hours")
 	private int CreditHours;
 
-	@Column(name = "status")
-	public boolean CourseStatus;
-
-	public boolean isCourseStatus() {
-		return CourseStatus;
-	}
-
-	public void setCourseStatus(boolean courseStatus) {
-		CourseStatus = courseStatus;
-	}
-
 	@ManyToOne
 	@JoinColumn(name = "dept_id")
 	private Department department;
 
-	@OneToMany(mappedBy = "course")
-	private List<Instructor> instructor;
+	@OneToOne(mappedBy = "course")
+	private Instructor instructor;
 
 	@OneToMany(mappedBy = "course")
 	private List<Student> student;
 
 	@OneToMany(mappedBy = "course")
 	private List<StudentFeeLog> studentfeelog;
-
-	public List<Instructor> getInstructor() {
-		return instructor;
-	}
-
-	public void setInstructor(List<Instructor> instructor) {
-		this.instructor = instructor;
-	}
 
 	public Course() {
 		super();
@@ -98,7 +80,7 @@ public class Course {
 	@Override
 	public String toString() {
 		return "Course [CourseId=" + CourseId + ", CourseTitle=" + CourseTitle + ", CreditHours=" + CreditHours
-				+ ", CourseStatus=" + CourseStatus + ", department=" + department + "]";
+				+ ", department=" + department + "]";
 	}
 
 }

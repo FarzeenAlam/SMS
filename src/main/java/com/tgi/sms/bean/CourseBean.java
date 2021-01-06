@@ -2,14 +2,15 @@ package com.tgi.sms.bean;
 
 public class CourseBean {
 	private String courseTitle;
-	private Boolean courseStatus;
-
-	public Boolean getCourseStatus() {
-		return courseStatus;
+	private boolean studentStatus;
+	
+	
+	public boolean isStudentStatus() {
+		return studentStatus;
 	}
 
-	public void setCourseStatus(Boolean courseStatus) {
-		this.courseStatus = courseStatus;
+	public void setStudentStatus(boolean studentStatus) {
+		this.studentStatus = studentStatus;
 	}
 
 	public String getCourseTitle() {
@@ -22,7 +23,8 @@ public class CourseBean {
 
 	@Override
 	public String toString() {
-		return "CourseBean [courseTitle=" + courseTitle + ", courseStatus=" + courseStatus + "]";
+		return "CourseBean [courseTitle=" + courseTitle + ", studentStatus=" + studentStatus + "]";
 	}
+
 
 }

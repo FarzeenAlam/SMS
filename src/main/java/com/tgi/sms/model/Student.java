@@ -47,9 +47,6 @@ public class Student {
 	@OneToOne(mappedBy = "student")
 	private FeeLog feelog;
 
-	@OneToMany(mappedBy = "student")
-	private List<Instructor> instructor;
-
 	public Student() {
 		super();
 	}
@@ -90,14 +87,6 @@ public class Student {
 		return department;
 	}
 
-	public List<Instructor> getInstructor() {
-		return instructor;
-	}
-
-	public void setInstructor(List<Instructor> instructor) {
-		this.instructor = instructor;
-	}
-
 	public void setDepartment(Department department) {
 		this.department = department;
 	}
@@ -105,8 +94,7 @@ public class Student {
 	@Override
 	public String toString() {
 		return "Student [StudentId=" + StudentId + ", StudentName=" + StudentName + ", StudentStatus=" + StudentStatus
-				+ ", department=" + department + ", course=" + course + ", feelog=" + feelog + ", instructor="
-				+ instructor + "]";
+				+ ", department=" + department + ", course=" + course + ", feelog=" + feelog + "]";
 	}
 
 }

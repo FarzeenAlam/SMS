@@ -7,6 +7,7 @@ import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -45,6 +46,7 @@ import com.tgi.sms.repository.FeeLogRepo;
 import com.tgi.sms.repository.InstructorRepo;
 import com.tgi.sms.repository.StudentFeeLogRepo;
 import com.tgi.sms.repository.StudentRepo;
+import com.tgi.sms.utils.ApplicationUtils;
 
 @Controller
 public class ControllerClass {
@@ -84,7 +86,7 @@ public class ControllerClass {
 		return "dateentry.jsp";
 	}
 
-	//date passed here and returned here
+	// date passed here and returned here
 	@RequestMapping("/searchRecord")
 	public ModelAndView searchReocord(String DateTime) throws ParseException {
 
@@ -92,7 +94,7 @@ public class ControllerClass {
 		System.out.println("List passed");
 		List<FeeLogDetailBean> feedetail = new ArrayList<FeeLogDetailBean>();
 		ModelAndView model = new ModelAndView("showdatedetails.jsp");
-		
+
 		for (FeeLog feelog : list) {
 			Course course = checkingInvoice(feelog.getInvoiceId());
 			String ctitle = course.getCourseTitle();
@@ -103,25 +105,25 @@ public class ControllerClass {
 		}
 
 		System.out.println(feedetail);
-		//ModelMap map = new ModelMap();
-		//map.put("feedetail", feedetail);
-		//model.addAllObjects(map);
-		//model.addObject(map);
+		// ModelMap map = new ModelMap();
+		// map.put("feedetail", feedetail);
+		// model.addAllObjects(map);
+		// model.addObject(map);
 		model.addObject("feedetail", feedetail);
 		return model;
 	}
 
 	private FeeLogDetailBean convertEntityIntoBean(FeeLog fee, String ctitle) {
-		
+
 		FeeLogDetailBean feelogdetail = new FeeLogDetailBean();
 		feelogdetail.setStudentId(fee.getStudent().getStudentId());
 		feelogdetail.setCourseTitle(ctitle);
 		feelogdetail.setAmount(fee.getAmount());
 		feelogdetail.setDateTime(fee.getDateTime());
-		
+
 		return feelogdetail;
 	}
-	
+
 	public Course checkingInvoice(String InvoiceId) {
 		Course course = null;
 		List<StudentFeeLog> list = studentfeerepo.findAll();
@@ -155,13 +157,13 @@ public class ControllerClass {
 
 		return "save.jsp";
 	}
-	
+
 	@RequestMapping("/status")
 	public ModelAndView status() {
 		ModelAndView model = new ModelAndView("statuspage.jsp");
 		List<Course> getlist = crepo.findAll();
 		List<CourseBean> bean = new ArrayList<CourseBean>();
-		for(Course c : getlist) {
+		for (Course c : getlist) {
 			CourseBean cb = new CourseBean();
 			cb.setCourseTitle(c.getCourseTitle());
 			bean.add(cb);
@@ -170,52 +172,63 @@ public class ControllerClass {
 		model.addObject("courses", bean);
 		return model;
 	}
-	
+
 	@RequestMapping("/viewstatus")
-	public String viewstatus(CourseBean bean) {
+	public ModelAndView viewstatus(CourseBean bean) {
+		ModelAndView model = new ModelAndView("viewstatus.jsp");
+
 		boolean status = bean.isStudentStatus();
 		String name = bean.getCourseTitle();
 		int id = daoClass.getCourseId(name);
-		List<Student> studentlist = daoClass.getStudents(status,id);
 		System.out.println(id);
 		System.out.println(name);
 		System.out.println(status);
-		System.out.println(studentlist);
-		return "save.jsp";
-	}
-	
-//	@RequestMapping("/viewstatus")
-//	public String viewstatus(CourseBean bean) {
-//		boolean status = bean.getCourseStatus();
-//		String name = bean.getCourseTitle();
-//		
-//		List<Integer> ids = new ArrayList<Integer>();
-//		List<Student> student = new ArrayList<Student>();
-//		List<Course> course  = crepo.findAll();
-//	//	Course co = crepo.findbyName(name);
-//	//	int id = co.getCourseId();
-//		for(Student s : student) {
-//			if(s.StudentStatus==status) {
-//				if(s.getCourse().getCourseId()== id) {
-//					ids.add(s.StudentId);
-//				}
-//			}
-//		}
-//		calculate(ids, id);
-//		return null;
-//	}
-	
-	private void calculate(List<Integer> ids, int id) {
-		List<FeeLog> list = daoClass.findFeeRecordsAgainstSpecificStudentId(ids);
-		List<Date> date = daoClass.findLastFeeDate(list);
-		
+		List<Student> student = daoClass.getStudents(status);
+		System.out.println(student);
+		List<DisplayBean> display = new ArrayList<DisplayBean>();
+		for(Student s : student) {
+			if(s.getCourse().getCourseId() == id) {
+				DisplayBean dis = new DisplayBean();
+				dis.setStudentId(s.getStudentId());
+				display.add(dis);
+			}
+		}
+		System.out.println(display);
+		DisplayBean dbean = new DisplayBean();
+		List<DisplayBean> finallist = new ArrayList<DisplayBean>();
+		List<FeeLog> feeloglist = feerepo.findAll();
+		for(int i = 0; i<display.size(); i++) {
+			DisplayBean d = display.get(i);
+			int disid = d.getStudentId();
+			for(FeeLog f : feeloglist) {
+				if(f.getStudent().getStudentId() == disid) {
+					System.out.println("From FEELOG");
+					System.out.println(f);
+					String checkinvoice = f.getInvoiceId();
+					boolean existsinSFL = daoClass.seacrhRecordFromFeelog(checkinvoice);
+					if(existsinSFL) {
+						Timestamp dateinTS =  feeloglist.get(i).getDateTime();
+						Date expirydate = ApplicationUtils.getExpiryDate(dateinTS);
+						System.out.println(expirydate);
+						dbean.setStudentId(disid);
+						dbean.setExpiry(expirydate);
+						dbean.setLastFee(dateinTS);
+						finallist.add(dbean);
+					}
+				}
+			}
+		}
+		System.out.println(finallist);
+		model.addObject("display", finallist);
+
+		return model;
 	}
 
-	//Testing if I still remember what I gave to Zaira
+	// Testing if I still remember what I gave to Zaira
 	@RequestMapping("loop")
 	public String testloop() {
-		for(int i = 0; i < 6; i++) {
-			for(int j = 0; j <=i; j++) {
+		for (int i = 0; i < 6; i++) {
+			for (int j = 0; j <= i; j++) {
 				System.out.print("*");
 			}
 			System.out.println();

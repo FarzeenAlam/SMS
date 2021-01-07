@@ -59,14 +59,6 @@ public class Student {
 		this.course = course;
 	}
 
-	public FeeLog getFeelog() {
-		return feelog;
-	}
-
-	public void setFeelog(FeeLog feelog) {
-		this.feelog = feelog;
-	}
-
 	public int getStudentId() {
 		return StudentId;
 	}
@@ -94,7 +86,7 @@ public class Student {
 	@Override
 	public String toString() {
 		return "Student [StudentId=" + StudentId + ", StudentName=" + StudentName + ", StudentStatus=" + StudentStatus
-				+ ", department=" + department + ", course=" + course + ", feelog=" + feelog + "]";
+				+ ", department=" + department + ", course=" + course + "]";
 	}
 
 }

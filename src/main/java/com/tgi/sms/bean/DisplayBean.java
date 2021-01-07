@@ -1,11 +1,11 @@
 package com.tgi.sms.bean;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class DisplayBean {
 	private int studentId;
-	private Timestamp lastFee;
-	private Timestamp expiry;
+	private Date lastFee;
+	private Date expiry;
 
 	public int getStudentId() {
 		return studentId;
@@ -15,19 +15,19 @@ public class DisplayBean {
 		this.studentId = studentId;
 	}
 
-	public Timestamp getLastFee() {
+	public Date getLastFee() {
 		return lastFee;
 	}
 
-	public void setLastFee(Timestamp lastFee) {
+	public void setLastFee(Date lastFee) {
 		this.lastFee = lastFee;
 	}
 
-	public Timestamp getExpiry() {
+	public Date getExpiry() {
 		return expiry;
 	}
 
-	public void setExpiry(Timestamp expiry) {
+	public void setExpiry(Date expiry) {
 		this.expiry = expiry;
 	}
 

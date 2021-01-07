@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+        	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -41,8 +43,12 @@ text-align: center;
 	<input type = "number" name="department" required style="padding: 8px 32px;">
 	<br><br>
 	
-	<label style="font-size:20px;">Enter course id:</label><br>
-	<input type = "number" name="course" required style="padding: 8px 32px;">
+	<label style="font-size: 20px;">Course Name:</label>
+				<select style="font-size: 20px;" name="courseTitle" id="courseTitle" required >
+				<c:forEach items="${courses}" var="course">
+				<option value="${course.courseTitle}">${course.courseTitle}</option>
+				</c:forEach>
+				</select>
 	<br><br>
 	
 	<input type = "submit" value="Enter" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">

@@ -185,16 +185,55 @@ public class daoClass {
 		return id;
 	}
 
-	public static List<Student> getStudents(boolean status, int id) {
+	public static List<Student> getStudents(boolean status) {
 		SessionFactory sessionFactory = getSessionFactory();
 		Session session = sessionFactory.openSession();
 		session.beginTransaction();
 		System.out.println("Session opened");
-		Query q = session.createQuery("from Student where StudentStatus= :StudentStatus and course= :course");
+		Query q = session.createQuery("from Student where StudentStatus= :StudentStatus");
 		q.setParameter("StudentStatus", status);
-		q.setParameter("course", id);
 		List<Student> student = q.list();
+		System.out.println("List created");
 		return student;
+	}
+
+	public static boolean seacrhRecordFromFeelog(String checkinvoice) {
+		SessionFactory sessionFactory = getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		System.out.println("Session opened");
+		boolean invoice = false;
+
+		Query q = session.createQuery("from StudentFeeLog where InvoiceId= :InvoiceId");
+		q.setParameter("InvoiceId", checkinvoice);
+		StudentFeeLog fee = (StudentFeeLog) q.uniqueResult();
+		if(fee != null) {
+			invoice = true;
+		}
+		return invoice;
+	}
+
+	public static int getDepartmentId(String name) {
+		SessionFactory sessionFactory = getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		System.out.println("Session opened");
+		Query q = session.createQuery("from Department where DepartmentName= :DepartmentName");
+		q.setParameter("DepartmentName", name);
+		Department dept = (Department) q.uniqueResult();
+		int id = dept.getDepartmentId();
+		return id;
+	}
+
+	public static Course getCoursebyName(String name) {
+		SessionFactory sessionFactory = getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		System.out.println("Session opened");
+		Query q = session.createQuery("from Course where CourseTitle= :CourseTitle");
+		q.setParameter("CourseTitle", name);
+		Course course = (Course) q.uniqueResult();
+		return course;
 	}
 
 }

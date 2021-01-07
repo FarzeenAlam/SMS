@@ -42,4 +42,13 @@ public class ApplicationUtils {
 		return null;
 	}
 
+	public static Date getExpiryDate(Timestamp dateinTS) {
+		Date date = dateinTS;
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		cal.add(Calendar.DATE, 30);
+		Date finaldate = cal.getTime();
+		return finaldate;
+	}
+
 }

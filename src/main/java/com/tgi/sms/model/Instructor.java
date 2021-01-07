@@ -18,17 +18,17 @@ public class Instructor {
 	@Id
 	@GeneratedValue
 	@Column(name="inst_id")
-	public int InstructorId;
+	private int InstructorId;
 	
 	@Column(name="inst_name")
-	public String InstructorName;
+	private String InstructorName;
 	
 	@Column(name="salary")
-	public float Salary;
+	private float Salary;
 	
 	@ManyToOne
 	@JoinColumn(name="dept_id")
-	public Department department;
+	private Department department;
 	
 	@OneToOne
 	@JoinColumn(name="course_id", referencedColumnName = "course_id")

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    pageEncoding="ISO-8859-1"%>
+    <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,11 +28,11 @@ header {
 
 	<div class="myDiv">
 
-		<form action="afterdepartment" method="post">
+		<form action="teacherhandler" method="post">
 
 
 			<fieldset>
-				<legend style="font-size: 35px;">Select desired department</legend>
+				<legend style="font-size: 35px;">Select Teacher Department</legend>
 				<div class="myDiv">
 					<label style="font-size: 20px;">Department Name:</label> 
 					<select style="font-size: 20px;" name="departmentName" required>

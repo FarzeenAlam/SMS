@@ -23,7 +23,7 @@ header {
 </head>
 <body>
 	<header>
-		<h2>View Record per Active Students</h2>
+		<h2>View Record per Student Status</h2>
 	</header>
 	<br>
 	<div class="myDiv">

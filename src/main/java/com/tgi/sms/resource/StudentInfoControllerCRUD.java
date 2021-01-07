@@ -11,6 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.tgi.sms.bean.CourseBean;
 import com.tgi.sms.bean.DepartmentBean;
+import com.tgi.sms.bean.StudentIDBean;
 import com.tgi.sms.dao.daoClass;
 import com.tgi.sms.model.Course;
 import com.tgi.sms.model.Department;
@@ -31,10 +32,9 @@ public class StudentInfoControllerCRUD {
 	@Autowired
 	DepartmentRepo deptrepo;
 
-	
+	//Object to store the selected department
 	private DepartmentBean deptbean;
 
-	
 	public DepartmentBean getDeptbean() {
 		return deptbean;
 	}
@@ -43,49 +43,26 @@ public class StudentInfoControllerCRUD {
 		this.deptbean = deptbean;
 	}
 
+	//Department Selection
 	@RequestMapping("afterdepartment")
-	public String afterdepartment(@ModelAttribute("departmentName") String department) {
-		System.out.print(department);
-		Department dept = convertBeantoEntity(department);
-//		List<CourseBean> returnlist = new ArrayList<CourseBean>();
-//		List<Course> courselist = crepo.findAll();
-//		for(Course c : courselist) {
-//			if(dept.getDepartmentId() == c.getDepartment().getDepartmentId())
-//				returnlist.add(c.getCourseTitle());
-//		}
-		List<Course> getlist = crepo.findAll();
-		List<CourseBean> bean = new ArrayList<CourseBean>();
-		for(Course c : getlist) {
-			CourseBean cb = new CourseBean();
-			if(dept.getDepartmentId() == c.getDepartment().getDepartmentId()) {
-			cb.setCourseTitle(c.getCourseTitle());
-			bean.add(cb);
-			}
-		}
-		System.out.println(bean);
+	public String afterdepartment(DepartmentBean bean) {
+		String name = bean.getDepartmentName();
+		int id = daoClass.getDepartmentId(name);
+		DepartmentBean depbean = new DepartmentBean();
+		depbean.setDepartmentId(id);
+		depbean.setDepartmentName(name);
+		System.out.print(depbean);
+		setDeptbean(depbean);
+		System.out.print(deptbean);
 
 		return "studentinfo.jsp";
 	}
 
-	private Department convertBeantoEntity(String dept) {
-		String name = dept;
-		Department department = new Department();
-		List<Department> list = deptrepo.findAll();
-		for(Department d : list) {
-			if(d.getDepartmentName().equals(name)) {
-				department.setDepartmentId(d.getDepartmentId());
-				department.setDepartmentName(d.getDepartmentName());
-			}
-		}
-		return department;
-	}
-
-	private List<Course> getCourses(DepartmentBean departmentName) {
-		Department dept = deptrepo.findById(departmentName.getDepartmentId()).orElse(null);
+	private List<Course> getCourses(DepartmentBean dep) {
 		List<Course> returnlist = new ArrayList<Course>();
 		List<Course> courselist = crepo.findAll();
 		for(Course c : courselist) {
-			if(c.getDepartment().getDepartmentId() == dept.getDepartmentId())
+			if(c.getDepartment().getDepartmentId() == dep.getDepartmentId())
 				returnlist.add(c);
 		}
 		System.out.print(returnlist);
@@ -96,17 +73,8 @@ public class StudentInfoControllerCRUD {
 	// Add student form
 	@RequestMapping("/addStudent")
 	public ModelAndView addStudent() {
-//		String name = departmentName;
-//
-//		List<Department> deptlist = deptrepo.findAll();
-//		Department dept = new Department();
-//		for(Department d : deptlist) {
-//			if(d.getDepartmentName().equals(name))
-//				dept = d;
-//		}
-		// Department obj = daoClass.findDepartmentId(departmentName);
-		// deptid = obj.getDepartmentId();
-		List<Course> courselist = getCourses(getDeptbean());
+		List<Course> courselist = getCourses(deptbean);
+		System.out.print("RETURNED LIST" +courselist);
 		ModelAndView model = new ModelAndView("addstudent.jsp");
 		List<CourseBean> bean = new ArrayList<CourseBean>();
 		for (Course c : courselist) {
@@ -121,24 +89,34 @@ public class StudentInfoControllerCRUD {
 
 	// Add operation
 	@RequestMapping("/addingStudent")
-	public String addingstudent(Student s) {
-//		Department dept = deptrepo.findById(getDeptid()).orElse(null);
-//		s.setDepartment(dept);
+	public String addingstudent(Student s, CourseBean b) {
+		String name = b.getCourseTitle();
+		Course course = daoClass.getCoursebyName(name);
+		Department dept = convertBeantoEntity(deptbean);
+		s.setCourse(course);
+		s.setDepartment(dept);
 		studrepo.save(s);
 		return "dataadded.jsp";
+	}
+
+	private Department convertBeantoEntity(DepartmentBean deptbean2) {
+		Department d = new Department();
+		d.setDepartmentId(deptbean2.getDepartmentId());
+		d.setDepartmentName(deptbean2.getDepartmentName());
+		return d;
 	}
 
 	// Edit student form
 	@RequestMapping("/editStudent")
 	public ModelAndView editStudent() {
-	//	List<Course> courselist = daoClass.findCoursebyDeptId(getDeptid());
+		List<Course> courselist = getCourses(deptbean);
 		ModelAndView model = new ModelAndView("editstudent.jsp");
 		List<CourseBean> bean = new ArrayList<CourseBean>();
-//		for (Course c : courselist) {
-//			CourseBean cb = new CourseBean();
-//			cb.setCourseTitle(c.getCourseTitle());
-//			bean.add(cb);
-//		}
+		for (Course c : courselist) {
+			CourseBean cb = new CourseBean();
+			cb.setCourseTitle(c.getCourseTitle());
+			bean.add(cb);
+		}
 		System.out.println(bean);
 		model.addObject("courses", bean);
 		return model;
@@ -146,10 +124,13 @@ public class StudentInfoControllerCRUD {
 
 	// Edit operation
 	@RequestMapping("/editingStudent")
-	public String editingStudent(Student s) {
-//		Department dept = deptrepo.findById(deptid).orElse(null);
-	//	s.setDepartment(dept);
+	public String editingStudent(Student s, CourseBean b) {
 		int id = s.getStudentId();
+		Department dept = convertBeantoEntity(deptbean);
+		s.setDepartment(dept);
+		String name = b.getCourseTitle();
+		Course course = daoClass.getCoursebyName(name);
+		s.setCourse(course);
 		if (studrepo.findById(id).isPresent()) {
 			Student news = studrepo.findById(s.getStudentId()).orElse(null);
 			news.setStudentStatus(s.StudentStatus);
@@ -164,17 +145,31 @@ public class StudentInfoControllerCRUD {
 
 	// Search student form
 	@RequestMapping("/searchStudent")
-	public String searchStudent(DepartmentBean dept) {
-		return "searchstudent.jsp";
+	public ModelAndView searchStudent() {
+		ModelAndView model = new ModelAndView("searchstudent.jsp");
+
+		List<Student> student = studrepo.findAll();
+		List<StudentIDBean> ids = new ArrayList<StudentIDBean>();
+		for(Student s : student) {
+			if(s.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
+				StudentIDBean bean = new StudentIDBean();
+				bean.setStudentId(s.getStudentId());
+				ids.add(bean);
+			}
+		}
+		System.out.println(ids);
+		model.addObject("courses", ids);
+		return model;
 	}
 
 	// Search operation
 	@RequestMapping("/searchingStudent")
-	public ModelAndView searchingStudent(int StudentId) {
+	public ModelAndView searchingStudent(StudentIDBean b) {
+		int id = b.getStudentId();
 		ModelAndView model = new ModelAndView("showstudent.jsp");
 		ModelAndView m = new ModelAndView("datanotfound.jsp");
-		if (studrepo.findById(StudentId).isPresent()) {
-			model.addObject("dept", studrepo.findById(StudentId));
+		if (studrepo.findById(id).isPresent()) {
+			model.addObject("student", studrepo.findById(id));
 			return model;
 		} else
 			return m;
@@ -182,16 +177,30 @@ public class StudentInfoControllerCRUD {
 
 	// Delete student form
 	@RequestMapping("/deleteStudent")
-	public String deleteStudent(DepartmentBean dept) {
-		return "deletestudent.jsp";
+	public ModelAndView deleteStudent() {
+		ModelAndView model = new ModelAndView("deletestudent.jsp");
+
+		List<Student> student = studrepo.findAll();
+		List<StudentIDBean> ids = new ArrayList<StudentIDBean>();
+		for(Student s : student) {
+			if(s.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
+				StudentIDBean bean = new StudentIDBean();
+				bean.setStudentId(s.getStudentId());
+				ids.add(bean);
+			}
+		}
+		System.out.println(ids);
+		model.addObject("courses", ids);
+		return model;
 	}
 
 	// Delete operation
 	@RequestMapping("/deletingStudent")
-	public String deletingStudent(int StudentId) {
+	public String deletingStudent(StudentIDBean b) {
+		int StudentId = b.getStudentId();
 		if (studrepo.findById(StudentId).isPresent()) {
 			studrepo.deleteById(StudentId);
-			return "datadeleted";
+			return "datadeleted.jsp";
 		} else
 			return "datanotfound.jsp";
 	}

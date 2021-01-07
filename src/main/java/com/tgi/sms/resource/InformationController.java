@@ -56,8 +56,19 @@ public class InformationController {
 
 	// If choice is teacher
 	@RequestMapping("/teacher")
-	public String teacher() {
-		return "teacher.jsp";
+	public ModelAndView teacher() {
+		ModelAndView model = new ModelAndView("instdept.jsp");
+		List<Department> dept = deptrepo.findAll();
+		List<DepartmentBean> bean = new ArrayList<DepartmentBean>();
+		for(Department d : dept) {
+			DepartmentBean dob = new DepartmentBean();
+			dob.setDepartmentName(d.getDepartmentName());
+			dob.setDepartmentId(d.getDepartmentId());
+			bean.add(dob);
+		}
+		System.out.println(bean);
+		model.addObject("dept", bean);
+		return model;
 	}
 
 }

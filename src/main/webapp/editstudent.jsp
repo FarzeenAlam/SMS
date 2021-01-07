@@ -40,7 +40,7 @@ text-align: center;
 	<label style="font-size: 20px;">Course Name:</label>
 				<select style="font-size: 20px;" name="courseTitle" id="courseTitle" required >
 				<c:forEach items="${courses}" var="course">
-				<option value="${courses}">${course.courseTitle}</option>
+				<option value="${course.courseTitle}">${course.courseTitle}</option>
 				</c:forEach>
 				</select>
 	<br><br>

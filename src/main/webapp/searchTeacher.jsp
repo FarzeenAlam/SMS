@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+            	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,11 +32,15 @@ text-align: center;
 	<fieldset>
 	<legend style="font-size:35px;">Enter details to search</legend>
 	
-	<label style="font-size:20px;">Enter teacher id:</label><br>
-	<input type = "number" name="InstructorId" required style="padding: 8px 32px;"><br><br>
+	<label style="font-size: 20px;">Instructor Id:</label>
+				<select style="font-size: 20px;" name="instructorId" id="instructorId" required >
+				<c:forEach items="${courses}" var="course">
+				<option value="${course.instructorId}">${course.instructorId}</option>
+				</c:forEach>
+				</select>
+	<br><br>
 	
 	<input type = "submit" value="Search" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
-	<input type = "reset" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	
 	</fieldset>
 	</form>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Oops!</title>
+<title>Department Deleted</title>
 <style>
 .myDiv {
   border: 5px outset black;
@@ -19,17 +19,14 @@
 </style>
 </head>
 <body>
-<div class="myDiv">
-
-ACCOUNT DATA ALREADY EXISTS!
-
-</div>
-<div class="btndiv">
+	<div class="myDiv">DEPARTMENT DELETED!</div>
+	<div class="btndiv">
 	<br><br>
 	<form action="gotoadminstart" method="post">
 		<input type="submit" value="Return"
 			style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	</form>
 	</div>
+
 </body>
 </html>

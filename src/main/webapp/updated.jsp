@@ -12,13 +12,24 @@
   text-align: center;
   font-size:35px;
 }
+.btndiv{
+ text-align: center;
+ font-size: 25px;
+}
 </style>
 </head>
 <body>
 
 <div class="myDiv">
-UPDATED!
+ACCOUNT DATA UPDATED!
 </div>
+<div class="btndiv">
+	<br><br>
+	<form action="gotoadminstart" method="post">
+		<input type="submit" value="Return"
+			style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
+	</form>
+	</div>
 
 </body>
 </html>

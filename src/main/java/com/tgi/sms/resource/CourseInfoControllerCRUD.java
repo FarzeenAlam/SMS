@@ -24,7 +24,7 @@ public class CourseInfoControllerCRUD {
 	@RequestMapping("/addingCourse")
 	public String addingCourse(Course c) {
 		crepo.save(c);
-		return "dataadded.jsp";
+		return "courseadded.jsp";
 	}
 
 	//Edit course form
@@ -43,9 +43,9 @@ public class CourseInfoControllerCRUD {
 			newc.setCreditHours(c.getCreditHours());
 			newc.setDepartment(c.getDepartment());
 			crepo.save(c);
-			return "updated.jsp";
+			return "courseupdated.jsp";
 		} else
-			return "datanotfound.jsp";
+			return "coursenotfound.jsp";
 	}
 
 	//Search course form
@@ -58,7 +58,7 @@ public class CourseInfoControllerCRUD {
 	@RequestMapping("/searchingCourse")
 	public ModelAndView searchingCourse(int CourseId) {
 		ModelAndView model = new ModelAndView("showCourse.jsp");
-		ModelAndView m = new ModelAndView("datanotfound.jsp");
+		ModelAndView m = new ModelAndView("coursenotfound.jsp");
 		if (crepo.findById(CourseId).isPresent()) {
 			model.addObject("course", crepo.findById(CourseId));
 			return model;
@@ -77,9 +77,9 @@ public class CourseInfoControllerCRUD {
 	public String deletingCourse(int CourseId) {
 		if (crepo.findById(CourseId).isPresent()) {
 			crepo.deleteById(CourseId);
-			return "datadeleted";
+			return "coursedeleted";
 		} else
-			return "datanotfound.jsp";
+			return "coursenotfound.jsp";
 	}
 
 }

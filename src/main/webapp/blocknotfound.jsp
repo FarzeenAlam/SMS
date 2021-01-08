@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Oops!</title>
+<title>Block Not Found</title>
 <style>
 .myDiv {
   border: 5px outset black;
@@ -20,9 +20,7 @@
 </head>
 <body>
 <div class="myDiv">
-
-ACCOUNT DATA ALREADY EXISTS!
-
+BLOCK DATA NOT FOUND!
 </div>
 <div class="btndiv">
 	<br><br>

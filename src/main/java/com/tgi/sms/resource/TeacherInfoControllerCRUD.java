@@ -135,9 +135,9 @@ public class TeacherInfoControllerCRUD {
 			newinst.setCourse(inst.getCourse());
 			newinst.setCourse(inst.getCourse());
 			instrepo.save(newinst);
-			return "updated.jsp";
+			return "teacherupdated.jsp";
 		} else
-			return "datanotfound.jsp";
+			return "teachernotfound.jsp";
 	}
 
 	// Search teacher form
@@ -164,7 +164,7 @@ public class TeacherInfoControllerCRUD {
 	public ModelAndView searchingTeacher(InstructorIDBean b) {
 		int InstructorId = b.getInstructorId();
 		ModelAndView model = new ModelAndView("showTeacher.jsp");
-		ModelAndView m = new ModelAndView("datanotfound.jsp");
+		ModelAndView m = new ModelAndView("teachernotfound.jsp");
 		if (instrepo.findById(InstructorId).isPresent()) {
 			model.addObject("instructor", instrepo.findById(InstructorId));
 			return model;
@@ -197,8 +197,8 @@ public class TeacherInfoControllerCRUD {
 		int InstructorId = b.getInstructorId();
 		if (instrepo.findById(InstructorId).isPresent()) {
 			instrepo.deleteById(InstructorId);
-			return "datadeleted.jsp";
+			return "teacherdeleted.jsp";
 		} else
-			return "datanotfound.jsp";
+			return "teachernotfound.jsp";
 	}
 }

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Oops!</title>
+<title>Student not found</title>
 <style>
 .myDiv {
   border: 5px outset black;
@@ -19,12 +19,8 @@
 </style>
 </head>
 <body>
-<div class="myDiv">
-
-ACCOUNT DATA ALREADY EXISTS!
-
-</div>
-<div class="btndiv">
+<div class="myDiv">STUDENT NOT FOUND!</div>
+	<div class="btndiv">
 	<br><br>
 	<form action="gotoadminstart" method="post">
 		<input type="submit" value="Return"

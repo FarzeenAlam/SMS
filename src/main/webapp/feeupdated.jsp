@@ -4,13 +4,13 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Oops!</title>
+<title>Fee Updated</title>
 <style>
 .myDiv {
-  border: 5px outset black;
-  background-color: red;    
-  text-align: center;
-  font-size:35px;
+	border: 5px outset red;
+	background-color: lightblue;
+	text-align: center;
+	font-size: 35px;
 }
 .btndiv{
  text-align: center;
@@ -19,14 +19,10 @@
 </style>
 </head>
 <body>
-<div class="myDiv">
-
-ACCOUNT DATA ALREADY EXISTS!
-
-</div>
-<div class="btndiv">
+<div class="myDiv">FEE DATA UPDATED!</div>
+	<div class="btndiv">
 	<br><br>
-	<form action="gotoadminstart" method="post">
+	<form action="gotostudentstart" method="post">
 		<input type="submit" value="Return"
 			style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	</form>

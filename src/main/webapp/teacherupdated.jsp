@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Oops!</title>
+<title>Teacher updated</title>
 <style>
 .myDiv {
-  border: 5px outset black;
-  background-color: red;    
+  border: 5px outset red;
+  background-color: lightblue;    
   text-align: center;
   font-size:35px;
 }
@@ -20,13 +20,11 @@
 </head>
 <body>
 <div class="myDiv">
-
-ACCOUNT DATA ALREADY EXISTS!
-
+TEACHER DATA UPDATED!
 </div>
 <div class="btndiv">
 	<br><br>
-	<form action="gotoadminstart" method="post">
+	<form action="gototeacherstart" method="post">
 		<input type="submit" value="Return"
 			style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	</form>

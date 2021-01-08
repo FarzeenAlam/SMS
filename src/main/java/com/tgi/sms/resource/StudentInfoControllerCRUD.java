@@ -96,7 +96,7 @@ public class StudentInfoControllerCRUD {
 		s.setCourse(course);
 		s.setDepartment(dept);
 		studrepo.save(s);
-		return "dataadded.jsp";
+		return "studentadded.jsp";
 	}
 
 	private Department convertBeantoEntity(DepartmentBean deptbean2) {
@@ -138,9 +138,9 @@ public class StudentInfoControllerCRUD {
 			news.setDepartment(s.getDepartment());
 			news.setCourse(s.getCourse());
 			studrepo.save(s);
-			return "updated.jsp";
+			return "studentupdated.jsp";
 		} else
-			return "datanotfound.jsp";
+			return "studentnotfound.jsp";
 	}
 
 	// Search student form
@@ -167,7 +167,7 @@ public class StudentInfoControllerCRUD {
 	public ModelAndView searchingStudent(StudentIDBean b) {
 		int id = b.getStudentId();
 		ModelAndView model = new ModelAndView("showstudent.jsp");
-		ModelAndView m = new ModelAndView("datanotfound.jsp");
+		ModelAndView m = new ModelAndView("studentnotfound.jsp");
 		if (studrepo.findById(id).isPresent()) {
 			model.addObject("student", studrepo.findById(id));
 			return model;
@@ -200,9 +200,9 @@ public class StudentInfoControllerCRUD {
 		int StudentId = b.getStudentId();
 		if (studrepo.findById(StudentId).isPresent()) {
 			studrepo.deleteById(StudentId);
-			return "datadeleted.jsp";
+			return "studentdeleted.jsp";
 		} else
-			return "datanotfound.jsp";
+			return "studentnotfound.jsp";
 	}
 
 }

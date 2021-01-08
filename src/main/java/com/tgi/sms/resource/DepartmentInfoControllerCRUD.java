@@ -41,9 +41,9 @@ public class DepartmentInfoControllerCRUD {
 			Department newd = deptrepo.findById(d.getDepartmentId()).orElse(null);
 			newd.setDepartmentName(d.getDepartmentName());
 			deptrepo.save(d);
-			return "updated.jsp";
+			return "deptupdated.jsp";
 		} else
-			return "datanotfound.jsp";
+			return "deptnotfound.jsp";
 	}
 
 	//Search dept form
@@ -56,7 +56,7 @@ public class DepartmentInfoControllerCRUD {
 	@RequestMapping("/searchingDepartment")
 	public ModelAndView searchingDepartment(int DepartmentId) {
 		ModelAndView model = new ModelAndView("showDept.jsp");
-		ModelAndView m = new ModelAndView("datanotfound.jsp");
+		ModelAndView m = new ModelAndView("deptnotfound.jsp");
 		if (deptrepo.findById(DepartmentId).isPresent()) {
 			model.addObject("dept", deptrepo.findById(DepartmentId));
 			return model;
@@ -75,8 +75,8 @@ public class DepartmentInfoControllerCRUD {
 	public String deletingDepartment(int DepartmentId) {
 		if (deptrepo.findById(DepartmentId).isPresent()) {
 			deptrepo.deleteById(DepartmentId);
-			return "datadeleted";
+			return "deptdeleted";
 		} else
-			return "datanotfound.jsp";
+			return "deptnotfound.jsp";
 	}
 }

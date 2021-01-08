@@ -40,21 +40,26 @@ public class AccountsHandlingCRUD {
 		} else {
 			if (admin.getAccountType().equals("Admin")) {
 				repo.save(admin);
-				return "save.jsp";
+				return "accountcreated.jsp";
 			} else if (admin.getAccountType().equals("Student")) {
 				Student s = new Student();
 				s.setStudentName(name);
 				studrepo.save(s);
 				repo.save(admin);
-				return "save.jsp";
+				return "accountcreated.jsp";
 			} else {
 				Instructor i = new Instructor();
 				instrepo.save(i);
 				repo.save(admin);
-				return "save.jsp";
+				return "accountcreated.jsp";
 			}
 
 		}
+	}
+	
+	@RequestMapping("gotoadminstart")
+	public String gotoadminstart() {
+		return "admin.jsp";
 	}
 
 	//Form to update the account details

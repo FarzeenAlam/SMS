@@ -17,6 +17,10 @@ color:white;
 text-align: center;
 font-size:25px;
 }
+.btndiv{
+ text-align: center;
+ font-size: 25px;
+}
 </style>
 </head>
 <body>
@@ -25,6 +29,13 @@ font-size:25px;
 	</header>
 	<div class="myDiv">
 	${student}
+	</div>
+	<div class="btndiv">
+	<br><br>
+	<form action="gotoadminstart" method="post">
+		<input type="submit" value="Return"
+			style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
+	</form>
 	</div>
 
 </body>

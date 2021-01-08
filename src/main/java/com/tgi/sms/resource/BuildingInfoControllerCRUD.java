@@ -28,7 +28,7 @@ public class BuildingInfoControllerCRUD {
 	@RequestMapping("/addingBlock")
 	public String addingBlock(Building b) {
 		brepo.save(b);
-		return "dataadded.jsp";
+		return "blockadded.jsp";
 	}
 
 	// Form to edit a block
@@ -46,9 +46,9 @@ public class BuildingInfoControllerCRUD {
 			newb.setBuildingName(b.getBuildingName());
 			newb.setDepartment(b.getDepartment());
 			brepo.save(newb);
-			return "updated.jsp";
+			return "blockupdated.jsp";
 		} else
-			return "datanotfound.jsp";
+			return "blocknotfound.jsp";
 	}
 
 	// Form to search a block
@@ -61,7 +61,7 @@ public class BuildingInfoControllerCRUD {
 	@RequestMapping("/searchingBlock")
 	public ModelAndView searchingBlock(int BuildingId) {
 		ModelAndView model = new ModelAndView("showBlock.jsp");
-		ModelAndView m = new ModelAndView("datanotfound.jsp");
+		ModelAndView m = new ModelAndView("blocknotfound.jsp");
 		if (brepo.findById(BuildingId).isPresent()) {
 			model.addObject("building", brepo.findById(BuildingId));
 			return model;
@@ -80,9 +80,9 @@ public class BuildingInfoControllerCRUD {
 	public String deletingBlock(int BuildingId) {
 		if (brepo.findById(BuildingId).isPresent()) {
 			brepo.deleteById(BuildingId);
-			return "datadeleted";
+			return "blockdeleted";
 		} else
-			return "datanotfound.jsp";
+			return "blocknotfound.jsp";
 	}
 
 }

@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Oops!</title>
+<title>Student Added</title>
 <style>
 .myDiv {
-  border: 5px outset black;
-  background-color: red;    
+  border: 5px outset red;
+  background-color: lightblue;    
   text-align: center;
   font-size:35px;
 }
@@ -19,12 +19,8 @@
 </style>
 </head>
 <body>
-<div class="myDiv">
-
-ACCOUNT DATA ALREADY EXISTS!
-
-</div>
-<div class="btndiv">
+<div class="myDiv">STUDENT DATA ADDED!</div>
+	<div class="btndiv">
 	<br><br>
 	<form action="gotoadminstart" method="post">
 		<input type="submit" value="Return"

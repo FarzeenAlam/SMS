@@ -85,16 +85,16 @@ public class FeeControllerCRUD {
 			newfee.setDateTime(new Timestamp(System.currentTimeMillis()));
 			newfee.setInvoiceId("IN-" + System.currentTimeMillis());
 			feerepo.save(newfee);
-			return "updated.jsp";
+			return "feeupdated.jsp";
 		} else
-			return "datanotfound.jsp"; 
+			return "feenotfound.jsp"; 
 	}
 
 	//Searching fee
 	@RequestMapping("/searchingFee")
 	public ModelAndView searchFee(int FeeId) {
 		ModelAndView model = new ModelAndView("showFee.jsp");
-		ModelAndView m = new ModelAndView("datanotfound.jsp");
+		ModelAndView m = new ModelAndView("feenotfound.jsp");
 		if (feerepo.findById(FeeId).isPresent()) {
 			model.addObject("fee", feerepo.findById(FeeId));
 			return model;
@@ -107,15 +107,9 @@ public class FeeControllerCRUD {
 	public String deletingFee(int FeeId) {
 		if (feerepo.findById(FeeId).isPresent()) {
 			feerepo.deleteById(FeeId);
-			return "datadeleted.jsp";
+			return "feedeleted.jsp";
 		} else
-			return "datanotfound.jsp";
-	}
-	
-	//Finding fee record against invoice no
-	@RequestMapping("/check")
-	public String check() {
-		return "getinvoice.jsp";
+			return "feenotfound.jsp";
 	}
 
 	@RequestMapping("/checkingInvoice")

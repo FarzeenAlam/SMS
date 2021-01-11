@@ -1,6 +1,9 @@
 package com.tgi.sms.resource;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tgi.sms.bean.AddFeeBean;
+import com.tgi.sms.bean.CourseBean;
+import com.tgi.sms.bean.DisplayBean;
+import com.tgi.sms.bean.FeeLogDetailBean;
+import com.tgi.sms.dao.daoClass;
 import com.tgi.sms.model.Course;
 import com.tgi.sms.model.FeeLog;
 import com.tgi.sms.model.Student;
@@ -17,23 +24,24 @@ import com.tgi.sms.repository.CourseRepo;
 import com.tgi.sms.repository.FeeLogRepo;
 import com.tgi.sms.repository.StudentFeeLogRepo;
 import com.tgi.sms.repository.StudentRepo;
+import com.tgi.sms.utils.ApplicationUtils;
 
 @Controller
 public class FeeControllerCRUD {
 
 	@Autowired
 	CourseRepo crepo;
-	
+
 	@Autowired
 	FeeLogRepo feerepo;
 
 	@Autowired
 	StudentRepo studrepo;
-	
+
 	@Autowired
 	StudentFeeLogRepo studentfeerepo;
-	
-	//Adding fee
+
+	// Adding fee
 	@RequestMapping("/addedfee")
 	public String addFee(AddFeeBean fee) {
 		String invoiceNo = "IN-" + System.currentTimeMillis();
@@ -44,8 +52,8 @@ public class FeeControllerCRUD {
 
 	}
 
-	//passing the courses list and invoice no from the previous function, 
-	//to the student_fee_log table
+	// passing the courses list and invoice no from the previous function,
+	// to the student_fee_log table
 	private void insertIntoStudentFeeLog(List<Integer> list, String invoiceNo) {
 		if (list.size() > 0) {
 			for (int i = 0; i < list.size(); i++) {
@@ -57,10 +65,9 @@ public class FeeControllerCRUD {
 				}
 			}
 		}
-
 	}
 
-	//Converting params received as bean to the entity object
+	// Converting params received as bean to the entity object
 	private FeeLog convertBeanIntoEntity(AddFeeBean bean) {
 		FeeLog feelog = new FeeLog();
 		feelog.setDateTime(new Timestamp(System.currentTimeMillis()));
@@ -73,8 +80,8 @@ public class FeeControllerCRUD {
 			feelog.setStudent(student);
 		return feelog;
 	}
-	
-	//Updating fee
+
+	// Updating fee
 	@RequestMapping("/updatefee")
 	public String editFee(FeeLog fee) {
 		int id = fee.getFeeId();
@@ -87,11 +94,12 @@ public class FeeControllerCRUD {
 			feerepo.save(newfee);
 			return "feeupdated.jsp";
 		} else
-			return "feenotfound.jsp"; 
+			return "feenotfound.jsp";
 	}
 
-	//Searching fee
-	@RequestMapping("/searchingFee")
+	// Searching fee
+	// If choice is byID
+	@RequestMapping("/searchingFeebyID")
 	public ModelAndView searchFee(int FeeId) {
 		ModelAndView model = new ModelAndView("showFee.jsp");
 		ModelAndView m = new ModelAndView("feenotfound.jsp");
@@ -101,8 +109,136 @@ public class FeeControllerCRUD {
 		} else
 			return m;
 	}
-	
-	//Deleting fee
+
+	// If choice is byInvoice
+	@RequestMapping("/checkingInvoice")
+	public ModelAndView searchingbyInvoice(String InvoiceId) {
+		ModelAndView model = new ModelAndView("showFee.jsp");
+		ModelAndView m = new ModelAndView("feenotfound.jsp");
+		List<StudentFeeLog> list = studentfeerepo.findAll();
+		Course course = new Course();
+		for (int i = 0; i < list.size(); i++) {
+			String tocheck = list.get(i).getInvoiceId();
+			if (tocheck.equals(InvoiceId)) {
+				course = list.get(i).getCourse();
+				model.addObject("fee", course);
+			}
+		}
+		if (course.equals(null))
+			return m;
+		else
+			return model;
+	}
+
+	// If choice is byDate
+	// Date passed here and returned here
+	@RequestMapping("/searchRecord")
+	public ModelAndView searchReocord(String DateTime) throws ParseException {
+
+		List<FeeLog> list = daoClass.findFeeRecordsAgainstSpecificDate(DateTime);
+		System.out.println("List passed");
+		List<FeeLogDetailBean> feedetail = new ArrayList<FeeLogDetailBean>();
+		ModelAndView model = new ModelAndView("showdatedetails.jsp");
+		ModelAndView m = new ModelAndView("feenotfound.jsp");
+
+		for (FeeLog feelog : list) {
+			Course course = checkingInvoice(feelog.getInvoiceId());
+			String ctitle = course.getCourseTitle();
+			FeeLogDetailBean bean = convertEntityIntoBean(feelog, ctitle);
+			feedetail.add(bean);
+			System.out.println("FEE DETAIL BEAN ON PRINT CHECK IN LOOP");
+			System.out.println(bean);
+		}
+		System.out.println(feedetail);
+		if (feedetail.isEmpty()) {
+			return m;
+		} else {
+			model.addObject("feedetail", feedetail);
+			return model;
+		}
+	}
+
+	private FeeLogDetailBean convertEntityIntoBean(FeeLog fee, String ctitle) {
+
+		FeeLogDetailBean feelogdetail = new FeeLogDetailBean();
+		feelogdetail.setStudentId(fee.getStudent().getStudentId());
+		feelogdetail.setCourseTitle(ctitle);
+		feelogdetail.setAmount(fee.getAmount());
+		feelogdetail.setDateTime(fee.getDateTime());
+
+		return feelogdetail;
+	}
+
+	public Course checkingInvoice(String InvoiceId) {
+		Course course = null;
+		List<StudentFeeLog> list = studentfeerepo.findAll();
+		for (int i = 0; i < list.size(); i++) {
+			String tocheck = list.get(i).getInvoiceId();
+			if (tocheck.equals(InvoiceId)) {
+				course = list.get(i).getCourse();
+			}
+		}
+		return course;
+	}
+
+	// If choice is byStatus
+	@RequestMapping("/viewstatus")
+	public ModelAndView viewstatus(CourseBean bean) {
+		ModelAndView model = new ModelAndView("viewstatus.jsp");
+		ModelAndView m = new ModelAndView("feenotfound.jsp");
+
+		boolean status = bean.isStudentStatus();
+		String name = bean.getCourseTitle();
+		int id = daoClass.getCourseId(name);
+		System.out.println(id);
+		System.out.println(name);
+		System.out.println(status);
+		List<Student> student = daoClass.getStudents(status);
+		System.out.println(student);
+		List<DisplayBean> display = new ArrayList<DisplayBean>();
+		for (Student s : student) {
+			if (s.getCourse().getCourseId() == id) {
+				DisplayBean dis = new DisplayBean();
+				dis.setStudentId(s.getStudentId());
+				display.add(dis);
+			}
+		}
+		System.out.println(display);
+		DisplayBean dbean = new DisplayBean();
+		List<DisplayBean> finallist = new ArrayList<DisplayBean>();
+		List<FeeLog> feeloglist = feerepo.findAll();
+		for (int i = 0; i < display.size(); i++) {
+			DisplayBean d = display.get(i);
+			int disid = d.getStudentId();
+			for (FeeLog f : feeloglist) {
+				if (f.getStudent().getStudentId() == disid) {
+					System.out.println("From FEELOG");
+					System.out.println(f);
+					String checkinvoice = f.getInvoiceId();
+					boolean existsinSFL = daoClass.seacrhRecordFromFeelog(checkinvoice);
+					if (existsinSFL) {
+						Timestamp dateinTS = feeloglist.get(i).getDateTime();
+						Date expirydate = ApplicationUtils.getExpiryDate(dateinTS);
+						System.out.println(expirydate);
+						dbean.setStudentId(disid);
+						dbean.setExpiry(expirydate);
+						dbean.setLastFee(dateinTS);
+						finallist.add(dbean);
+					}
+				}
+			}
+		}
+		System.out.println(finallist);
+
+		if (finallist.isEmpty()) {
+			return m;
+		} else {
+			model.addObject("display", finallist);
+			return model;
+		}
+	}
+
+	// Deleting fee
 	@RequestMapping("deletingFee")
 	public String deletingFee(int FeeId) {
 		if (feerepo.findById(FeeId).isPresent()) {
@@ -112,17 +248,4 @@ public class FeeControllerCRUD {
 			return "feenotfound.jsp";
 	}
 
-	@RequestMapping("/checkingInvoice")
-	public ModelAndView checkingInvoice(String InvoiceId) {
-		ModelAndView model = new ModelAndView("showFee.jsp");
-		List<StudentFeeLog> list = studentfeerepo.findAll();
-		for(int i = 0; i < list.size(); i++) {
-			String tocheck = list.get(i).getInvoiceId();
-			if(tocheck.equals(InvoiceId)) {
-				Course course = list.get(i).getCourse();
-				model.addObject("fee", course);
-			}
-		}
-		return model;
-	}
 }

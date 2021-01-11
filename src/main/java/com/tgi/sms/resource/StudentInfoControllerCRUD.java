@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,7 +31,7 @@ public class StudentInfoControllerCRUD {
 	@Autowired
 	DepartmentRepo deptrepo;
 
-	//Object to store the selected department
+	// Object to store the selected department
 	private DepartmentBean deptbean;
 
 	public DepartmentBean getDeptbean() {
@@ -43,7 +42,7 @@ public class StudentInfoControllerCRUD {
 		this.deptbean = deptbean;
 	}
 
-	//Department Selection
+	// Department Selection
 	@RequestMapping("afterdepartment")
 	public String afterdepartment(DepartmentBean bean) {
 		String name = bean.getDepartmentName();
@@ -61,20 +60,19 @@ public class StudentInfoControllerCRUD {
 	private List<Course> getCourses(DepartmentBean dep) {
 		List<Course> returnlist = new ArrayList<Course>();
 		List<Course> courselist = crepo.findAll();
-		for(Course c : courselist) {
-			if(c.getDepartment().getDepartmentId() == dep.getDepartmentId())
+		for (Course c : courselist) {
+			if (c.getDepartment().getDepartmentId() == dep.getDepartmentId())
 				returnlist.add(c);
 		}
 		System.out.print(returnlist);
 		return returnlist;
 	}
 
-
 	// Add student form
 	@RequestMapping("/addStudent")
 	public ModelAndView addStudent() {
 		List<Course> courselist = getCourses(deptbean);
-		System.out.print("RETURNED LIST" +courselist);
+		System.out.print("RETURNED LIST" + courselist);
 		ModelAndView model = new ModelAndView("addstudent.jsp");
 		List<CourseBean> bean = new ArrayList<CourseBean>();
 		for (Course c : courselist) {
@@ -150,8 +148,8 @@ public class StudentInfoControllerCRUD {
 
 		List<Student> student = studrepo.findAll();
 		List<StudentIDBean> ids = new ArrayList<StudentIDBean>();
-		for(Student s : student) {
-			if(s.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
+		for (Student s : student) {
+			if (s.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
 				StudentIDBean bean = new StudentIDBean();
 				bean.setStudentId(s.getStudentId());
 				ids.add(bean);
@@ -182,8 +180,8 @@ public class StudentInfoControllerCRUD {
 
 		List<Student> student = studrepo.findAll();
 		List<StudentIDBean> ids = new ArrayList<StudentIDBean>();
-		for(Student s : student) {
-			if(s.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
+		for (Student s : student) {
+			if (s.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
 				StudentIDBean bean = new StudentIDBean();
 				bean.setStudentId(s.getStudentId());
 				ids.add(bean);

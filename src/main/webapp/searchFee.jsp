@@ -20,12 +20,12 @@ text-align: center;
 </head>
 <body>
 	<header>
-	<h2>Search a fee record</h2>
+	<h2>Search a Fee Record</h2>
 	</header>
 	
 	<div class="myDiv">
 	
-	<form action="searchingFee" method="post">
+	<form action="searchingFeebyID" method="post">
 	
 	<fieldset>
 	<legend style="font-size:35px;">Enter details to search</legend>

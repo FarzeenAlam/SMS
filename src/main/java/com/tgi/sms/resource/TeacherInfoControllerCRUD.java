@@ -11,12 +11,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.tgi.sms.bean.CourseBean;
 import com.tgi.sms.bean.DepartmentBean;
 import com.tgi.sms.bean.InstructorIDBean;
-import com.tgi.sms.bean.StudentIDBean;
 import com.tgi.sms.dao.daoClass;
 import com.tgi.sms.model.Course;
 import com.tgi.sms.model.Department;
 import com.tgi.sms.model.Instructor;
-import com.tgi.sms.model.Student;
 import com.tgi.sms.repository.CourseRepo;
 import com.tgi.sms.repository.DepartmentRepo;
 import com.tgi.sms.repository.InstructorRepo;
@@ -31,7 +29,7 @@ public class TeacherInfoControllerCRUD {
 
 	@Autowired
 	DepartmentRepo deptrepo;
-	
+
 	private DepartmentBean deptbean;
 
 	public DepartmentBean getDeptbean() {
@@ -71,7 +69,7 @@ public class TeacherInfoControllerCRUD {
 	@RequestMapping("/addTeacher")
 	public ModelAndView addTeacher() {
 		List<Course> courselist = getCourses(deptbean);
-		System.out.print("RETURNED LIST" +courselist);
+		System.out.print("RETURNED LIST" + courselist);
 		ModelAndView model = new ModelAndView("addTeacher.jsp");
 		List<CourseBean> bean = new ArrayList<CourseBean>();
 		for (Course c : courselist) {
@@ -102,6 +100,7 @@ public class TeacherInfoControllerCRUD {
 		d.setDepartmentName(deptbean2.getDepartmentName());
 		return d;
 	}
+
 	// Edit teacher form
 	@RequestMapping("/editTeacher")
 	public ModelAndView editTeacher() {
@@ -147,8 +146,8 @@ public class TeacherInfoControllerCRUD {
 
 		List<Instructor> instructor = instrepo.findAll();
 		List<InstructorIDBean> ibean = new ArrayList<InstructorIDBean>();
-		for(Instructor i : instructor) {
-			if(i.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
+		for (Instructor i : instructor) {
+			if (i.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
 				InstructorIDBean bean = new InstructorIDBean();
 				bean.setInstructorId(i.getInstructorId());
 				ibean.add(bean);
@@ -179,8 +178,8 @@ public class TeacherInfoControllerCRUD {
 
 		List<Instructor> instructor = instrepo.findAll();
 		List<InstructorIDBean> ibean = new ArrayList<InstructorIDBean>();
-		for(Instructor i : instructor) {
-			if(i.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
+		for (Instructor i : instructor) {
+			if (i.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
 				InstructorIDBean bean = new InstructorIDBean();
 				bean.setInstructorId(i.getInstructorId());
 				ibean.add(bean);

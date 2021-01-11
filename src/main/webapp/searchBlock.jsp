@@ -30,8 +30,8 @@ text-align: center;
 	<fieldset>
 	<legend style="font-size:35px;">Enter details to search</legend>
 	
-	<label style="font-size:20px;">Enter block id:</label><br>
-	<input type = "number" name="BuildingId" required style="padding: 8px 32px;"><br><br>
+	<label style="font-size:20px;">Enter Block Name:</label><br>
+	<input type = "text" name="BuildingName" required style="padding: 8px 32px;"><br><br>
 	
 	<input type = "submit" value="Search" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	<input type = "reset" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">

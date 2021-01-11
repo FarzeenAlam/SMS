@@ -236,4 +236,15 @@ public class daoClass {
 		return course;
 	}
 
+	public static Building findBuildingbyName(String buildingName) {
+		SessionFactory sessionFactory = getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		System.out.println("Session opened");
+		Query q = session.createQuery("from Building where BuildingName= :BuildingName");
+		q.setParameter("BuildingName", buildingName);
+		Building b = (Building) q.uniqueResult();
+		return b;
+	}
+
 }

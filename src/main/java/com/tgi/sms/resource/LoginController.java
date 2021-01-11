@@ -62,4 +62,10 @@ public class LoginController {
 		} else
 			return wdata;
 	}
+	
+	//On Return button from invalid login entry
+	@RequestMapping("/back")
+	public String back() {
+		return "Main.jsp";
+	}
 }

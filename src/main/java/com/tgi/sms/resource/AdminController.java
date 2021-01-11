@@ -19,5 +19,7 @@ public class AdminController {
 	public String information() {
 		return "infoform.jsp";
 	}
+	
+	//If choice is fee search, mapping done in Student Controller, Fee Controller along with its CRUD Controller
 
 }

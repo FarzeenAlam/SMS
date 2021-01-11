@@ -15,7 +15,6 @@ public class ApplicationUtils {
 		c.set(Calendar.MINUTE, 59);
 		c.set(Calendar.SECOND, 59);
 		c.set(Calendar.MILLISECOND, 999);
-		// return new Timestamp(c.getTime().getTime());
 		return c.getTime();
 	}
 
@@ -26,7 +25,6 @@ public class ApplicationUtils {
 		c.set(Calendar.MINUTE, 0);
 		c.set(Calendar.SECOND, 0);
 		c.set(Calendar.MILLISECOND, 0);
-		// return new Timestamp(c.getTime().getTime());
 		return c.getTime();
 	}
 

@@ -1,11 +1,17 @@
 package com.tgi.sms.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.tgi.sms.bean.DepartmentBean;
+import com.tgi.sms.dao.daoClass;
 import com.tgi.sms.model.Building;
+import com.tgi.sms.model.Department;
 import com.tgi.sms.repository.BuildingRepo;
 import com.tgi.sms.repository.DepartmentRepo;
 
@@ -18,30 +24,80 @@ public class BuildingInfoControllerCRUD {
 	@Autowired
 	DepartmentRepo deptrepo;
 
-	// Form to add block
+	// RETURN FORMS
+	// add block
 	@RequestMapping("/addBlock")
-	public String addBlock() {
-		return "addBlock.jsp";
+	public ModelAndView addBlock() {
+		ModelAndView model = new ModelAndView("addBlock.jsp");
+		List<Department> dept = deptrepo.findAll();
+		List<DepartmentBean> bean = new ArrayList<DepartmentBean>();
+		for (Department d : dept) {
+			DepartmentBean dob = new DepartmentBean();
+			dob.setDepartmentName(d.getDepartmentName());
+			dob.setDepartmentId(d.getDepartmentId());
+			bean.add(dob);
+		}
+		System.out.println(bean);
+		model.addObject("dept", bean);
+		return model;
+	}
+	
+	// edit a block
+	@RequestMapping("/editBlock")
+	public ModelAndView editBlock() {
+		ModelAndView model = new ModelAndView("editBlock.jsp");
+		List<Department> dept = deptrepo.findAll();
+		List<DepartmentBean> bean = new ArrayList<DepartmentBean>();
+		for (Department d : dept) {
+			DepartmentBean dob = new DepartmentBean();
+			dob.setDepartmentName(d.getDepartmentName());
+			dob.setDepartmentId(d.getDepartmentId());
+			bean.add(dob);
+		}
+		System.out.println(bean);
+		model.addObject("dept", bean);
+		return model;
+	}
+	
+	// search a block
+	@RequestMapping("/searchBlock")
+	public String searchBlock() {
+		return "searchBlock.jsp";
+	}
+	
+	// delete a block
+	@RequestMapping("/deleteBlock")
+	public String deleteBlock() {
+		return "deleteBlock.jsp";
 	}
 
+	// OPERATIONS
 	// Add operation
 	@RequestMapping("/addingBlock")
-	public String addingBlock(Building b) {
+	public String addingBlock(Building b, DepartmentBean bean) {
+		String name = bean.getDepartmentName();
+		int id = daoClass.getDepartmentId(name);
+		DepartmentBean depbean = new DepartmentBean();
+		depbean.setDepartmentId(id);
+		depbean.setDepartmentName(name);
+		Department dept = convertBeantoEntity(depbean);
+		b.setDepartment(dept);
 		brepo.save(b);
 		return "blockadded.jsp";
 	}
 
-	// Form to edit a block
-	@RequestMapping("/editBlock")
-	public String editBlock() {
-		return "editBlock.jsp";
-	}
-
 	// Edit operation
 	@RequestMapping("/editingBlock")
-	public String editingBlock(Building b) {
-		int id = b.getBuildingId();
-		if (brepo.findById(id).isPresent()) {
+	public String editingBlock(Building b, DepartmentBean bean) {
+		String name = bean.getDepartmentName();
+		int id = daoClass.getDepartmentId(name);
+		DepartmentBean depbean = new DepartmentBean();
+		depbean.setDepartmentId(id);
+		depbean.setDepartmentName(name);
+		Department dept = convertBeantoEntity(depbean);
+		b.setDepartment(dept);
+		int bid = b.getBuildingId();
+		if (brepo.findById(bid).isPresent()) {
 			Building newb = brepo.findById(b.getBuildingId()).orElse(null);
 			newb.setBuildingName(b.getBuildingName());
 			newb.setDepartment(b.getDepartment());
@@ -51,38 +107,39 @@ public class BuildingInfoControllerCRUD {
 			return "blocknotfound.jsp";
 	}
 
-	// Form to search a block
-	@RequestMapping("/searchBlock")
-	public String searchBlock() {
-		return "searchBlock.jsp";
-	}
-
 	// Search operation
 	@RequestMapping("/searchingBlock")
-	public ModelAndView searchingBlock(int BuildingId) {
+	public ModelAndView searchingBlock(String BuildingName) {
 		ModelAndView model = new ModelAndView("showBlock.jsp");
 		ModelAndView m = new ModelAndView("blocknotfound.jsp");
-		if (brepo.findById(BuildingId).isPresent()) {
-			model.addObject("building", brepo.findById(BuildingId));
+		Building b = daoClass.findBuildingbyName(BuildingName);
+		int id = b.getBuildingId();
+		if (brepo.findById(id).isPresent()) {
+			model.addObject("building", brepo.findById(id));
 			return model;
 		} else
 			return m;
 	}
 
-	// Form to delete a block
-	@RequestMapping("/deleteBlock")
-	public String deleteBlock() {
-		return "deleteBlock.jsp";
-	}
-
 	// Delete operation
 	@RequestMapping("deletingBlock")
-	public String deletingBlock(int BuildingId) {
-		if (brepo.findById(BuildingId).isPresent()) {
-			brepo.deleteById(BuildingId);
+	public String deletingBlock(String BuildingName) {
+		Building b = daoClass.findBuildingbyName(BuildingName);
+		int id = b.getBuildingId();
+		if (brepo.findById(id).isPresent()) {
+			brepo.deleteById(id);
 			return "blockdeleted";
 		} else
 			return "blocknotfound.jsp";
 	}
+	
+	private Department convertBeantoEntity(DepartmentBean depbean) {
+		Department d = new Department();
+		d.setDepartmentId(depbean.getDepartmentId());
+		d.setDepartmentName(depbean.getDepartmentName());
+		return d;
+	}
+	
+	
 
 }

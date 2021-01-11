@@ -68,9 +68,9 @@ box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 <br>
 <br>
 	<div class="myDiv">
-	<form action="datesearch">
+	<form action="searchFee">
 	<input type="submit" style="background-color: #4CAF50;"
-	class="btn1" value = "FeeSearch" name="feesearch"/>
+	class="btn1" value = "Fee Search" name="feesearch"/>
 	</form>
  	</div>
 </body>

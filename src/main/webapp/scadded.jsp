@@ -4,13 +4,13 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Wrong Entry!</title>
+<title>Added Successfully</title>
 <style>
 .myDiv {
-  border: 5px outset black;
-  background-color: red;    
-  text-align: center;
-  font-size:35px;
+	border: 5px outset red;
+	background-color: lightblue;
+	text-align: center;
+	font-size: 35px;
 }
 .btndiv{
  text-align: center;
@@ -19,10 +19,13 @@
 </style>
 </head>
 <body>
-<div class="myDiv">
-INVALID EMAIL!
-</div>
+<div class="myDiv">COURSE ADDED FOR THE SELECTED STUDENT!</div>
 	<div class="btndiv">
+	<br><br>
+	<form action="gotoadminstart" method="post">
+		<input type="submit" value="Return to Admin"
+			style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
+	</form>
 	<br><br>
 	<form action="back" method="post">
 		<input type="submit" value="Return to Login"

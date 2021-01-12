@@ -25,7 +25,7 @@ INCORRECT PASSWORD!
 <div class="btndiv">
 	<br><br>
 	<form action="back" method="post">
-		<input type="submit" value="Return"
+		<input type="submit" value="Return to Login"
 			style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	</form>
 	</div>

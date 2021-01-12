@@ -21,6 +21,7 @@ import com.tgi.sms.model.Department;
 import com.tgi.sms.model.FeeLog;
 import com.tgi.sms.model.Instructor;
 import com.tgi.sms.model.Student;
+import com.tgi.sms.model.StudentCourses;
 import com.tgi.sms.model.StudentFeeLog;
 import com.tgi.sms.utils.ApplicationUtils;
 

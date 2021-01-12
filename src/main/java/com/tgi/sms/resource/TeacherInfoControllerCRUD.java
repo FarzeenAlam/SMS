@@ -64,7 +64,7 @@ public class TeacherInfoControllerCRUD {
 		return returnlist;
 	}
 
-	// Teacher Profile
+	// RETURN TEACHER FORMS
 	// Add teacher form
 	@RequestMapping("/addTeacher")
 	public ModelAndView addTeacher() {
@@ -80,25 +80,6 @@ public class TeacherInfoControllerCRUD {
 		System.out.println(bean);
 		model.addObject("courses", bean);
 		return model;
-	}
-
-	// Add operation
-	@RequestMapping("/addingTeacher")
-	public String addingTeacher(Instructor inst, CourseBean b) {
-		String name = b.getCourseTitle();
-		Course course = daoClass.getCoursebyName(name);
-		Department dept = convertBeantoEntity(deptbean);
-		inst.setCourse(course);
-		inst.setDepartment(dept);
-		instrepo.save(inst);
-		return "teacheradded.jsp";
-	}
-
-	private Department convertBeantoEntity(DepartmentBean deptbean2) {
-		Department d = new Department();
-		d.setDepartmentId(deptbean2.getDepartmentId());
-		d.setDepartmentName(deptbean2.getDepartmentName());
-		return d;
 	}
 
 	// Edit teacher form
@@ -117,6 +98,57 @@ public class TeacherInfoControllerCRUD {
 		return model;
 	}
 
+	// Search teacher form
+	@RequestMapping("/searchTeacher")
+	public ModelAndView searchTeacher() {
+		ModelAndView model = new ModelAndView("searchTeacher.jsp");
+		List<Instructor> instructor = instrepo.findAll();
+		List<InstructorIDBean> ibean = new ArrayList<InstructorIDBean>();
+		DepartmentBean dbean = getDeptbean();
+		for (Instructor i : instructor) {
+			if (i.getDepartment().getDepartmentId() == dbean.getDepartmentId()) {
+				InstructorIDBean bean = new InstructorIDBean();
+				bean.setInstructorId(i.getInstructorId());
+				ibean.add(bean);
+			}
+		}
+		System.out.println(ibean);
+		model.addObject("courses", ibean);
+		return model;
+	}
+
+	// Delete teacher form
+	@RequestMapping("/deleteTeacher")
+	public ModelAndView deleteTeacher() {
+		ModelAndView model = new ModelAndView("deleteTeacher.jsp");
+		ModelAndView m = new ModelAndView("teachernotfound.jsp");
+		List<Instructor> instructor = instrepo.findAll();
+		List<InstructorIDBean> ibean = new ArrayList<InstructorIDBean>();
+		for (Instructor i : instructor) {
+			if (i.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
+				InstructorIDBean bean = new InstructorIDBean();
+				bean.setInstructorId(i.getInstructorId());
+				ibean.add(bean);
+			}
+		}
+		System.out.println(ibean);
+		model.addObject("courses", ibean);
+		return model;
+	}
+
+	// OPERATIONS
+	// Add operation
+	@RequestMapping("/addingTeacher")
+	public String addingTeacher(Instructor inst, CourseBean b) {
+		String name = b.getCourseTitle();
+		Course course = daoClass.getCoursebyName(name);
+		Department dept = convertBeantoEntity(deptbean);
+		inst.setCourse(course);
+		inst.setDepartment(dept);
+		instrepo.save(inst);
+		return "teacheradded.jsp";
+	}
+
 	// Edit operation
 	@RequestMapping("/editingTeacher")
 	public String editingTeacher(Instructor inst, CourseBean b) {
@@ -132,30 +164,10 @@ public class TeacherInfoControllerCRUD {
 			newinst.setSalary(inst.getSalary());
 			newinst.setDepartment(inst.getDepartment());
 			newinst.setCourse(inst.getCourse());
-			newinst.setCourse(inst.getCourse());
 			instrepo.save(newinst);
 			return "teacherupdated.jsp";
 		} else
 			return "teachernotfound.jsp";
-	}
-
-	// Search teacher form
-	@RequestMapping("/searchTeacher")
-	public ModelAndView searchTeacher() {
-		ModelAndView model = new ModelAndView("searchTeacher.jsp");
-
-		List<Instructor> instructor = instrepo.findAll();
-		List<InstructorIDBean> ibean = new ArrayList<InstructorIDBean>();
-		for (Instructor i : instructor) {
-			if (i.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
-				InstructorIDBean bean = new InstructorIDBean();
-				bean.setInstructorId(i.getInstructorId());
-				ibean.add(bean);
-			}
-		}
-		System.out.println(ibean);
-		model.addObject("courses", ibean);
-		return model;
 	}
 
 	// Search operation
@@ -171,25 +183,6 @@ public class TeacherInfoControllerCRUD {
 			return m;
 	}
 
-	// Delete teacher form
-	@RequestMapping("/deleteTeacher")
-	public ModelAndView deleteTeacher() {
-		ModelAndView model = new ModelAndView("deleteTeacher.jsp");
-
-		List<Instructor> instructor = instrepo.findAll();
-		List<InstructorIDBean> ibean = new ArrayList<InstructorIDBean>();
-		for (Instructor i : instructor) {
-			if (i.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
-				InstructorIDBean bean = new InstructorIDBean();
-				bean.setInstructorId(i.getInstructorId());
-				ibean.add(bean);
-			}
-		}
-		System.out.println(ibean);
-		model.addObject("courses", ibean);
-		return model;
-	}
-
 	// Delete operation
 	@RequestMapping("/deletingTeacher")
 	public String deletingTeacher(InstructorIDBean b) {
@@ -199,5 +192,12 @@ public class TeacherInfoControllerCRUD {
 			return "teacherdeleted.jsp";
 		} else
 			return "teachernotfound.jsp";
+	}
+	
+	private Department convertBeantoEntity(DepartmentBean deptbean2) {
+		Department d = new Department();
+		d.setDepartmentId(deptbean2.getDepartmentId());
+		d.setDepartmentName(deptbean2.getDepartmentName());
+		return d;
 	}
 }

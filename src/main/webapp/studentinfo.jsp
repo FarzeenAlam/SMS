@@ -82,6 +82,14 @@ box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
  	class="btn2" value = "Delete Student" name="delete"/><br>
   	</form>
 	</div>
-
+	<br>
+<br>
+<br>
+	<div class="myDiv">
+	<form action="addCourses">
+	<input type="submit" style="background-color: #555555;" 
+ 	class="btn2" value = "Add Course" name="delete"/><br>
+  	</form>
+	</div>
 </body>
 </html>

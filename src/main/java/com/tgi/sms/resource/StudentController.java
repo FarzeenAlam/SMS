@@ -9,8 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.tgi.sms.bean.CourseBean;
+import com.tgi.sms.bean.StudentIDBean;
 import com.tgi.sms.model.Course;
+import com.tgi.sms.model.Student;
 import com.tgi.sms.repository.CourseRepo;
+import com.tgi.sms.repository.StudentRepo;
 
 @Controller
 public class StudentController {
@@ -19,6 +22,9 @@ public class StudentController {
 
 	@Autowired
 	CourseRepo crepo;
+	
+	@Autowired
+	StudentRepo studrepo;
 
 	@RequestMapping("gotostudentstart")
 	public String backtostart() {
@@ -27,8 +33,18 @@ public class StudentController {
 
 	// Add fee fee form
 	@RequestMapping("/addFee")
-	public String add() {
-		return "addfee.jsp";
+	public ModelAndView add() {
+		ModelAndView model = new ModelAndView("addfeestudentid.jsp");
+		List<StudentIDBean> ids = new ArrayList<StudentIDBean>();
+		List<Student> student = studrepo.findAll();
+		for(int i = 0; i < student.size(); i++) {
+			StudentIDBean bean = new StudentIDBean();
+			bean.setStudentId(student.get(i).StudentId);
+			ids.add(bean);
+		}
+//		return "addfee.jsp";
+		model.addObject("ids", ids);
+		return model;
 	}
 
 	// Edit fee form
@@ -81,12 +97,6 @@ public class StudentController {
 	@RequestMapping("/deleteFee")
 	public String deleteFee() {
 		return "deleteFee.jsp";
-	}
-
-	// Finding fee record against invoice no
-	@RequestMapping("/check")
-	public String check() {
-		return "getinvoice.jsp";
 	}
 
 }

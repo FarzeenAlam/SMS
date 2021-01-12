@@ -30,7 +30,7 @@ text-align: center;
 	<fieldset>
 	<legend style="font-size:35px;">Enter details to delete a block</legend>
 	
-	<label style="font-size:20px;">Enter Building Id:</label><br>
+	<label style="font-size:20px;">Enter Building Name:</label><br>
 	<input type = "text" name="BuildingName" required style="padding: 8px 32px;"><br><br>
 	
 	<input type = "submit" value="Delete" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">

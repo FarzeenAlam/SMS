@@ -37,23 +37,11 @@ public class Student {
 	@JoinColumn(name = "dept_id")
 	public Department department;
 
-	@ManyToOne
-	@JoinColumn(name = "course_id")
-	private Course course;
-
 	@OneToOne(mappedBy = "student")
 	private FeeLog feelog;
 
 	public Student() {
 		super();
-	}
-
-	public Course getCourse() {
-		return course;
-	}
-
-	public void setCourse(Course course) {
-		this.course = course;
 	}
 
 	public int getStudentId() {
@@ -83,7 +71,7 @@ public class Student {
 	@Override
 	public String toString() {
 		return "Student [StudentId=" + StudentId + ", StudentName=" + StudentName + ", StudentStatus=" + StudentStatus
-				+ ", department=" + department + ", course=" + course + "]";
+				+ ", department=" + department + "]";
 	}
 
 }

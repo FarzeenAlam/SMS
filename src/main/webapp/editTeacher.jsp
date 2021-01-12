@@ -43,10 +43,6 @@ text-align: center;
 	<input type = "number" name="Salary" required style="padding: 8px 32px;">
 	<br><br>
 	
-	<label style="font-size:20px;">Enter department id:</label><br>
-	<input type = "number" name="department" required style="padding: 8px 32px;">
-	<br><br>
-	
 	<label style="font-size: 20px;">Course Name:</label>
 				<select style="font-size: 20px;" name="courseTitle" id="courseTitle" required >
 				<c:forEach items="${courses}" var="course">

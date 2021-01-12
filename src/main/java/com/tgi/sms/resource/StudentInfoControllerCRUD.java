@@ -15,8 +15,11 @@ import com.tgi.sms.dao.daoClass;
 import com.tgi.sms.model.Course;
 import com.tgi.sms.model.Department;
 import com.tgi.sms.model.Student;
+import com.tgi.sms.model.StudentCourses;
+import com.tgi.sms.model.StudentFeeLog;
 import com.tgi.sms.repository.CourseRepo;
 import com.tgi.sms.repository.DepartmentRepo;
+import com.tgi.sms.repository.StudentCoursesRepo;
 import com.tgi.sms.repository.StudentRepo;
 
 @Controller
@@ -30,6 +33,9 @@ public class StudentInfoControllerCRUD {
 
 	@Autowired
 	DepartmentRepo deptrepo;
+
+	@Autowired
+	StudentCoursesRepo screpo;
 
 	// Object to store the selected department
 	private DepartmentBean deptbean;
@@ -88,13 +94,22 @@ public class StudentInfoControllerCRUD {
 	// Add operation
 	@RequestMapping("/addingStudent")
 	public String addingstudent(Student s, CourseBean b) {
-		String name = b.getCourseTitle();
-		Course course = daoClass.getCoursebyName(name);
 		Department dept = convertBeantoEntity(deptbean);
-		s.setCourse(course);
 		s.setDepartment(dept);
 		studrepo.save(s);
+		String name = b.getCourseTitle();
+		Course c = daoClass.getCoursebyName(name);
+		int cid = c.getCourseId();
+		int sid = s.getStudentId();
+		insertintoSC(sid, cid);
 		return "studentadded.jsp";
+	}
+
+	private void insertintoSC(int sid, int cid) {
+		StudentCourses sc = new StudentCourses();
+		sc.setCourseId(cid);
+		sc.setStudentId(sid);
+		screpo.save(sc);
 	}
 
 	private Department convertBeantoEntity(DepartmentBean deptbean2) {
@@ -115,27 +130,37 @@ public class StudentInfoControllerCRUD {
 			cb.setCourseTitle(c.getCourseTitle());
 			bean.add(cb);
 		}
-		System.out.println(bean);
+		List<Student> student = studrepo.findAll();
+		List<StudentIDBean> ids = new ArrayList<StudentIDBean>();
+		for (Student s : student) {
+			if (s.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
+				StudentIDBean sbean = new StudentIDBean();
+				sbean.setStudentId(s.getStudentId());
+				ids.add(sbean);
+			}
+		}
+		model.addObject("ids", ids);
 		model.addObject("courses", bean);
 		return model;
 	}
 
 	// Edit operation
 	@RequestMapping("/editingStudent")
-	public String editingStudent(Student s, CourseBean b) {
-		int id = s.getStudentId();
+	public String editingStudent(Student s, CourseBean b, StudentIDBean ib) {
+		int id = ib.getStudentId();
 		Department dept = convertBeantoEntity(deptbean);
 		s.setDepartment(dept);
 		String name = b.getCourseTitle();
 		Course course = daoClass.getCoursebyName(name);
-		s.setCourse(course);
+		int cid = course.getCourseId();
+		int sid = s.getStudentId();
 		if (studrepo.findById(id).isPresent()) {
 			Student news = studrepo.findById(s.getStudentId()).orElse(null);
 			news.setStudentStatus(s.StudentStatus);
 			news.setStudentName(s.getStudentName());
 			news.setDepartment(s.getDepartment());
-			news.setCourse(s.getCourse());
 			studrepo.save(s);
+			insertintoSC(sid, cid);
 			return "studentupdated.jsp";
 		} else
 			return "studentnotfound.jsp";
@@ -201,6 +226,58 @@ public class StudentInfoControllerCRUD {
 			return "studentdeleted.jsp";
 		} else
 			return "studentnotfound.jsp";
+	}
+	
+	@RequestMapping("/addCourses")
+	public ModelAndView addCourses() {
+		ModelAndView model = new ModelAndView("addcoursesforstudent.jsp");
+		List<Student> student = studrepo.findAll();
+		List<StudentIDBean> ids = new ArrayList<StudentIDBean>();
+		for (Student s : student) {
+			if (s.getDepartment().getDepartmentId() == deptbean.getDepartmentId()) {
+				StudentIDBean bean = new StudentIDBean();
+				bean.setStudentId(s.getStudentId());
+				ids.add(bean);
+			}
+		}
+		System.out.println(ids);
+		List<Course> courselist = getCourses(deptbean);
+		List<CourseBean> bean = new ArrayList<CourseBean>();
+		for (Course c : courselist) {
+			CourseBean cb = new CourseBean();
+			cb.setCourseTitle(c.getCourseTitle());
+			bean.add(cb);
+		}
+		model.addObject("ids", ids);
+		model.addObject("courses", bean);
+		return model;
+	}
+	
+	@RequestMapping("/addingcourseforstudent")
+	public String addingcourseforstudent(StudentIDBean si, CourseBean b) {
+		String name = b.getCourseTitle();
+		Course course = daoClass.getCoursebyName(name);
+		int cid = course.getCourseId();
+		int bid = si.getStudentId();
+		boolean ifexists = checkif(bid, cid);
+		if(ifexists) {
+			return "scexists.jsp";
+		}
+		else {
+			insertintoSC(bid, cid);
+			return "scadded.jsp";
+		}	
+	}
+
+	private boolean checkif(int bid, int cid) {
+
+		boolean flag = false;
+		List<StudentCourses> list = screpo.findAll();
+		for(int i = 0; i < list.size(); i++) {
+			if(list.get(i).getStudentId() == bid && list.get(i).getCourseId() == cid)
+				flag = true;
+		}
+		return flag;
 	}
 
 }

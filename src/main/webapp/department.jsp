@@ -67,7 +67,7 @@ box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 <br>
 	<div class="myDiv">
 	<form action="searchDepartment">
-	<input type="submit" style="background-color: #e7e7e7;" 
+	<input type="submit" style="background-color: #555555;" 
   	class="btn1" value = "Search" name="search"/><br>
   	</form>
 	</div>
@@ -76,7 +76,7 @@ box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 <br>
 	<div class="myDiv">
 	<form action="deleteDepartment">
-	<input type="submit" style="background-color: #555555;" 
+	<input type="submit" style="background-color: #008CBA;" 
  	class="btn2" value = "Delete" name="delete"/><br>
   	</form>
 	</div>
@@ -85,7 +85,7 @@ box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
 <br>
 	<div class="myDiv">
 	<form action="searchCourses">
-	<input type="submit" style="background-color: #e7e7e7;" 
+	<input type="submit" style="background-color: #4CAF50;" 
   	class="btn1" value = "View Courses" name="search"/><br>
   	</form>
 	</div>

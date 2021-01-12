@@ -15,6 +15,7 @@ import com.tgi.sms.bean.AddFeeBean;
 import com.tgi.sms.bean.CourseBean;
 import com.tgi.sms.bean.DisplayBean;
 import com.tgi.sms.bean.FeeLogDetailBean;
+import com.tgi.sms.bean.StudentIDBean;
 import com.tgi.sms.dao.daoClass;
 import com.tgi.sms.model.Course;
 import com.tgi.sms.model.FeeLog;
@@ -41,13 +42,25 @@ public class FeeControllerCRUD {
 	@Autowired
 	StudentFeeLogRepo studentfeerepo;
 
+	@RequestMapping("afterstudentid")
+	public void afterstudentid(StudentIDBean bean) {
+		int id = bean.getStudentId();
+		List<Course> course = crepo.findAll();
+		List<CourseBean> list = new ArrayList<CourseBean>();
+		Student s = studrepo.findById(id).orElse(null);
+		for(int i = 0; i < course.size(); i++) {
+			
+		}
+	}
 	// Adding fee
 	@RequestMapping("/addedfee")
 	public String addFee(AddFeeBean fee) {
 		String invoiceNo = "IN-" + System.currentTimeMillis();
 		FeeLog feelog = convertBeanIntoEntity(fee);
-		insertIntoStudentFeeLog(fee.getCoursesList(), invoiceNo);
-		feerepo.save(feelog);
+		if (feelog.getStudent() != null) {
+			insertIntoStudentFeeLog(fee.getCoursesList(), invoiceNo);
+			feerepo.save(feelog);
+		}
 		return "feeadded.jsp";
 
 	}
@@ -182,61 +195,61 @@ public class FeeControllerCRUD {
 	}
 
 	// If choice is byStatus
-	@RequestMapping("/viewstatus")
-	public ModelAndView viewstatus(CourseBean bean) {
-		ModelAndView model = new ModelAndView("viewstatus.jsp");
-		ModelAndView m = new ModelAndView("feenotfound.jsp");
-
-		boolean status = bean.isStudentStatus();
-		String name = bean.getCourseTitle();
-		int id = daoClass.getCourseId(name);
-		System.out.println(id);
-		System.out.println(name);
-		System.out.println(status);
-		List<Student> student = daoClass.getStudents(status);
-		System.out.println(student);
-		List<DisplayBean> display = new ArrayList<DisplayBean>();
-		for (Student s : student) {
-			if (s.getCourse().getCourseId() == id) {
-				DisplayBean dis = new DisplayBean();
-				dis.setStudentId(s.getStudentId());
-				display.add(dis);
-			}
-		}
-		System.out.println(display);
-		DisplayBean dbean = new DisplayBean();
-		List<DisplayBean> finallist = new ArrayList<DisplayBean>();
-		List<FeeLog> feeloglist = feerepo.findAll();
-		for (int i = 0; i < display.size(); i++) {
-			DisplayBean d = display.get(i);
-			int disid = d.getStudentId();
-			for (FeeLog f : feeloglist) {
-				if (f.getStudent().getStudentId() == disid) {
-					System.out.println("From FEELOG");
-					System.out.println(f);
-					String checkinvoice = f.getInvoiceId();
-					boolean existsinSFL = daoClass.seacrhRecordFromFeelog(checkinvoice);
-					if (existsinSFL) {
-						Timestamp dateinTS = feeloglist.get(i).getDateTime();
-						Date expirydate = ApplicationUtils.getExpiryDate(dateinTS);
-						System.out.println(expirydate);
-						dbean.setStudentId(disid);
-						dbean.setExpiry(expirydate);
-						dbean.setLastFee(dateinTS);
-						finallist.add(dbean);
-					}
-				}
-			}
-		}
-		System.out.println(finallist);
-
-		if (finallist.isEmpty()) {
-			return m;
-		} else {
-			model.addObject("display", finallist);
-			return model;
-		}
-	}
+//	@RequestMapping("/viewstatus")
+//	public ModelAndView viewstatus(CourseBean bean) {
+//		ModelAndView model = new ModelAndView("viewstatus.jsp");
+//		ModelAndView m = new ModelAndView("feenotfound.jsp");
+//
+//		boolean status = bean.isStudentStatus();
+//		String name = bean.getCourseTitle();
+//		int id = daoClass.getCourseId(name);
+//		System.out.println(id);
+//		System.out.println(name);
+//		System.out.println(status);
+//		List<Student> student = daoClass.getStudents(status);
+//		System.out.println(student);
+//		List<DisplayBean> display = new ArrayList<DisplayBean>();
+//		for (Student s : student) {
+//			if (s.getCourse().getCourseId() == id) {
+//				DisplayBean dis = new DisplayBean();
+//				dis.setStudentId(s.getStudentId());
+//				display.add(dis);
+//			}
+//		}
+//		System.out.println(display);
+//		DisplayBean dbean = new DisplayBean();
+//		List<DisplayBean> finallist = new ArrayList<DisplayBean>();
+//		List<FeeLog> feeloglist = feerepo.findAll();
+//		for (int i = 0; i < display.size(); i++) {
+//			DisplayBean d = display.get(i);
+//			int disid = d.getStudentId();
+//			for (FeeLog f : feeloglist) {
+//				if (f.getStudent().getStudentId() == disid) {
+//					System.out.println("From FEELOG");
+//					System.out.println(f);
+//					String checkinvoice = f.getInvoiceId();
+//					boolean existsinSFL = daoClass.seacrhRecordFromFeelog(checkinvoice);
+//					if (existsinSFL) {
+//						Timestamp dateinTS = feeloglist.get(i).getDateTime();
+//						Date expirydate = ApplicationUtils.getExpiryDate(dateinTS);
+//						System.out.println(expirydate);
+//						dbean.setStudentId(disid);
+//						dbean.setExpiry(expirydate);
+//						dbean.setLastFee(dateinTS);
+//						finallist.add(dbean);
+//					}
+//				}
+//			}
+//		}
+//		System.out.println(finallist);
+//
+//		if (finallist.isEmpty()) {
+//			return m;
+//		} else {
+//			model.addObject("display", finallist);
+//			return model;
+//		}
+//	}
 
 	// Deleting fee
 	@RequestMapping("deletingFee")

@@ -31,8 +31,12 @@ text-align: center;
 	<fieldset>
 	<legend style="font-size:35px;">Enter student details to edit</legend>
 	
-	<label style="font-size:20px;">Enter student id:</label><br>
-	<input type = "number" name="StudentId" required><br><br>
+	<label style="font-size: 20px;">Student Id:</label>
+				<select style="font-size: 20px;" name="studentId" id="studentId" required >
+				<c:forEach items="${ids}" var="course">
+				<option value="${course.studentId}">${course.studentId}</option>
+				</c:forEach>
+				</select><br><br>
 	
 	<label style="font-size:20px;">Enter name:</label><br>
 	<input type = "text" name="StudentName" required style="padding: 8px 32px;"><br><br>

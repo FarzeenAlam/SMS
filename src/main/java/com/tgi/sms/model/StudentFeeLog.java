@@ -9,34 +9,29 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="student_fee_log")
+@Table(name = "student_fee_log")
 public class StudentFeeLog {
-
-	public StudentFeeLog() {
-		super();
-	}
 
 	@Id
 	@GeneratedValue
-	@Column(name="student_fee_log_id")
+	@Column(name = "student_fee_log_id")
 	private int StudentFeeLogId;
-	
+
 	public StudentFeeLog(String invoiceId, Course course) {
-		
+
 		InvoiceId = invoiceId;
 		this.course = course;
 	}
 
-	@Column(name="invoice_id")
+	@Column(name = "invoice_id")
 	private String InvoiceId;
 
 	@ManyToOne
-	@JoinColumn(name="course_id")
+	@JoinColumn(name = "course_id")
 	private Course course;
 
-	@Override
-	public String toString() {
-		return "StudentFeeLog [StudentFeeLogId=" + StudentFeeLogId + ", InvoiceId=" + InvoiceId + "]";
+	public StudentFeeLog() {
+		super();
 	}
 
 	public Course getCourse() {
@@ -62,5 +57,9 @@ public class StudentFeeLog {
 	public void setInvoiceId(String invoiceId) {
 		InvoiceId = invoiceId;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "StudentFeeLog [StudentFeeLogId=" + StudentFeeLogId + ", InvoiceId=" + InvoiceId + "]";
+	}
 }

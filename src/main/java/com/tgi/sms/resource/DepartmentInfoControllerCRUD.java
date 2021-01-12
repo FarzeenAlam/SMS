@@ -112,19 +112,25 @@ public class DepartmentInfoControllerCRUD {
 	@RequestMapping("/deptselected")
 	public ModelAndView deptselected(DepartmentBean b) {
 		ModelAndView model = new ModelAndView("showcourses.jsp");
+		ModelAndView m = new ModelAndView("deptnotfound.jsp");
 		String name = b.getDepartmentName();
 		int id = daoClass.getDepartmentId(name);
 		List<ShowCoursesBean> returnlist = new ArrayList<ShowCoursesBean>();
 		List<Course> courselist = crepo.findAll();
-		for (Course c : courselist) {
-			if (c.getDepartment().getDepartmentId() == id) {
-				ShowCoursesBean bean = convertEntityToBean(c);
-				returnlist.add(bean);
+		if(courselist != null) {
+			for(int i = 0; i < courselist.size(); i++) {
+				Course c = courselist.get(i);
+				if(c.getDepartment().getDepartmentId() == id) {
+					ShowCoursesBean bean = convertEntityToBean(c);
+					returnlist.add(bean);
+				}
 			}
+			model.addObject("courses", returnlist);
+			return model;
 		}
-		System.out.print(returnlist);
-		model.addObject("courses", returnlist);
-		return model;
+		else
+			return m;
+	
 	}
 
 	private ShowCoursesBean convertEntityToBean(Course c) {

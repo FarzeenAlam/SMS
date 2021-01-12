@@ -84,16 +84,6 @@ header {
 				value="Delete" name="delete" />
 		</form>
 	</div>
-	<br>
-	<br>
-	<br>
-	<div class="myDiv">
-		<form action="check">
-			<input type="submit" style="background-color: #e7e7e7;" class="btn1"
-				value="Search Invoice" name="search" /><br>
-		</form>
-	</div>
-	<br>
 
 </body>
 </html>

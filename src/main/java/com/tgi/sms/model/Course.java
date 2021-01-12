@@ -36,9 +36,6 @@ public class Course {
 	private Instructor instructor;
 
 	@OneToMany(mappedBy = "course")
-	private List<Student> student;
-
-	@OneToMany(mappedBy = "course")
 	private List<StudentFeeLog> studentfeelog;
 
 	public Course() {

@@ -138,16 +138,6 @@ public class daoClass {
 		return list;
 	}
 
-	public static List<Date> findLastFeeDate(List<FeeLog> list) {
-		
-		
-		SessionFactory sessionFactory = getSessionFactory();
-		Session session = sessionFactory.openSession();
-		session.beginTransaction();
-		System.out.println("Session opened");
-		return null;
-	}
-
 	public static Department findDepartmentId(String departmentName) {
 		SessionFactory sessionFactory = getSessionFactory();
 		Session session = sessionFactory.openSession();
@@ -246,6 +236,18 @@ public class daoClass {
 		q.setParameter("BuildingName", buildingName);
 		Building b = (Building) q.uniqueResult();
 		return b;
+	}
+
+	public static String getCoursebyId(int cid) {
+		SessionFactory sessionFactory = getSessionFactory();
+		Session session = sessionFactory.openSession();
+		session.beginTransaction();
+		System.out.println("Session opened");
+		Query q = session.createQuery("from Course where CourseId= :CourseId");
+		q.setParameter("CourseId", cid);
+		Course course = (Course) q.uniqueResult();
+		String name = course.getCourseTitle();
+		return name;
 	}
 
 }

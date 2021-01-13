@@ -16,7 +16,6 @@ import com.tgi.sms.model.Course;
 import com.tgi.sms.model.Department;
 import com.tgi.sms.model.Student;
 import com.tgi.sms.model.StudentCourses;
-import com.tgi.sms.model.StudentFeeLog;
 import com.tgi.sms.repository.CourseRepo;
 import com.tgi.sms.repository.DepartmentRepo;
 import com.tgi.sms.repository.StudentCoursesRepo;

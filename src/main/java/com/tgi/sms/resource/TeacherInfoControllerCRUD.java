@@ -121,7 +121,6 @@ public class TeacherInfoControllerCRUD {
 	@RequestMapping("/deleteTeacher")
 	public ModelAndView deleteTeacher() {
 		ModelAndView model = new ModelAndView("deleteTeacher.jsp");
-		ModelAndView m = new ModelAndView("teachernotfound.jsp");
 		List<Instructor> instructor = instrepo.findAll();
 		List<InstructorIDBean> ibean = new ArrayList<InstructorIDBean>();
 		for (Instructor i : instructor) {

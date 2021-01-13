@@ -34,7 +34,7 @@ public class StudentController {
 	// Add fee fee form
 	@RequestMapping("/addFee")
 	public ModelAndView add() {
-		ModelAndView model = new ModelAndView("addfeestudentid.jsp");
+		ModelAndView model = new ModelAndView("addfee.jsp");
 		List<StudentIDBean> ids = new ArrayList<StudentIDBean>();
 		List<Student> student = studrepo.findAll();
 		for(int i = 0; i < student.size(); i++) {
@@ -42,7 +42,6 @@ public class StudentController {
 			bean.setStudentId(student.get(i).StudentId);
 			ids.add(bean);
 		}
-//		return "addfee.jsp";
 		model.addObject("ids", ids);
 		return model;
 	}

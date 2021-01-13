@@ -31,8 +31,7 @@ text-align: center;
 	<fieldset>
 	<legend style="font-size:35px;">Enter details to delete a teacher profile</legend>
 	
-	<label style="font-size:20px;">Enter teacher id:</label><br>
-	<label style="font-size: 20px;">Student Id:</label>
+	<label style="font-size: 20px;">Instructor Id:</label>
 				<select style="font-size: 20px;" name="instructorId" id="instructorId" required >
 				<c:forEach items="${courses}" var="course">
 				<option value="${course.instructorId}">${course.instructorId}</option>

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+        	<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,8 +31,13 @@ text-align: center;
 	<form action="addedfee" method="post">
 	<fieldset>
 	<legend style="font-size:35px;">Add fee details</legend>
-	<label style="font-size:20px;">Enter student id:</label><br>
-	<input type = "number" name="student" required style="padding: 8px 32px;"><br><br>
+	<label style="font-size: 20px;">Student Id:</label> 
+					<select style="font-size: 20px;" name="studentId" required>
+						<c:forEach items="${ids}" var="course">
+							<option value="${course.studentId}" >${course.studentId}
+							</option>
+						</c:forEach>
+					</select><br><br>
 	<label style="font-size:20px;">Enter the amount:</label><br>
 	<input type = "number" name="Amount" required style="padding: 8px 32px;"><br><br>
 	<label style="font-size:20px;">Choose transaction type:</label>
@@ -43,12 +50,14 @@ text-align: center;
 	
 	</select>
 	<br><br>
-	<label style="font-size:20px;">Enter course id:</label><br>
+	<label style="font-size:20px;">Course 1 Id:</label><br>
 	<input type = "number" name="coursesList" required style="padding: 8px 32px;"><br><br>
-	<label style="font-size:20px;">Enter course id:</label><br>
-	<input type = "number" name="coursesList"  style="padding: 8px 32px;"><br><br>
-	<label style="font-size:20px;">Enter course id:</label><br>
-	<input type = "number" name="coursesList"  style="padding: 8px 32px;"><br><br>
+	
+	<label style="font-size:20px;">Course 2 Id:</label><br>
+	<input type = "number" name="coursesList" style="padding: 8px 32px;"><br><br>
+	
+	<label style="font-size:20px;">Course 3 Id:</label><br>
+	<input type = "number" name="coursesList" style="padding: 8px 32px;"><br><br>
 	
 	<input type = "submit" value="Add" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">
 	<input type = "reset" style="text-align: center; padding: 8px 16px; font-size: 100%; display: inline-block;">

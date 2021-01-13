@@ -29,8 +29,8 @@ text-align: center;
 	<form action="updatefee" method="post">
 	<fieldset>
 	<legend style="font-size:35px;">Enter details to edit fee record</legend>
-	<label style="font-size:20px;">Enter student id:</label><br>
-	<input type = "number" name="student" required style="padding: 8px 32px;"><br><br>
+	<label style="font-size:20px;">Enter Fee id:</label><br>
+	<input type = "number" name="FeeId" required style="padding: 8px 32px;"><br><br>
 	<label style="font-size:20px;">Enter the amount:</label><br>
 	<input type = "number" name="Amount" required style="padding: 8px 32px;"><br><br>
 	<label style="font-size:20px;">Choose transaction type:</label>

@@ -29,6 +29,11 @@ public class ControllerClass {
 		return "Main.jsp";
 	}
 	
+	@RequestMapping("/img")
+	public String img() {
+		return "profile.jsp";
+	}
+	
 	@RequestMapping("/testcheckbox")
 	public ModelAndView testcheck() {
 		ModelAndView model = new ModelAndView("testcheckbox.jsp");

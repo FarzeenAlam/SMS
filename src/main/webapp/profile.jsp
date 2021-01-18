@@ -17,6 +17,9 @@ color:white;
 .myDiv{
 text-align: center;
 }
+.btn{
+text-align: right;
+}
 </style>
 <body>
 <header>
@@ -24,10 +27,14 @@ text-align: center;
 	</header>
 	
 	<div class="myDiv">
-	<form action="addingBlock" method="post">
+	<form action="profile" method="post">
 	<fieldset>
-		<img id="image-1" alt="" src="src/main/images/1e109b17072b14c003c14304a5746d25.jpg" width="200" height="100"/>
-			<br><br>
+		<img id="image-1" alt="" src="images/placeholder.png" width="200" height="100"/>
+			<br>
+			<div class="btn">
+		  <input type="file" id="myFile" name="filename">
+		  </div>	
+			<br>
 		<label style="font-size:20px;">Enter First Name:</label><br>
 	<input type = "text" name="firstName" required><br><br>
 	<label style="font-size:20px;">Enter Second Name:</label><br>
